@@ -33,8 +33,8 @@ const Register: NextPage = () => {
     <>
       <MainLayout>
         <Center h="100%" w="100%">
-          <Container maw="100%" w={600}>
-            <Card>
+          <Container maw="100%" w={400}>
+            <Card p="xl">
               <Title align="center" mb="lg">
                 Register an Account
               </Title>
