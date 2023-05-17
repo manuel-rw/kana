@@ -4,13 +4,13 @@ import bcrypt from "bcrypt";
 
 import { createTRPCRouter, publicProcedure } from "../trpc";
 
-import { userRegisterFormSchema } from "~/schemas/user-schema";
+import { signUpFormSchema } from "~/schemas/sign-up-schema";
 import { prisma } from "~/server/db";
 import { hashPassword } from "~/utils/security";
 
 export const registerRouter = createTRPCRouter({
   register: publicProcedure
-    .input(userRegisterFormSchema)
+    .input(signUpFormSchema)
     .mutation(async ({ input }) => {
       const existingUser = await prisma.user.findFirst({
         where: {

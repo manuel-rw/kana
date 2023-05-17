@@ -14,7 +14,7 @@ import { NextPage } from "next";
 import Link from "next/link";
 import { FormWrapper } from "~/components/auth/FormWrapper";
 import { MainLayout } from "~/layout/main-layout";
-import { userRegisterFormSchema } from "~/schemas/user-schema";
+import { signUpFormSchema } from "~/schemas/sign-up-schema";
 import { api } from "~/utils/api";
 
 const Register: NextPage = () => {
@@ -26,7 +26,7 @@ const Register: NextPage = () => {
     },
     validateInputOnChange: true,
     validateInputOnBlur: true,
-    validate: zodResolver(userRegisterFormSchema),
+    validate: zodResolver(signUpFormSchema),
   });
 
   const { mutate } = api.register.register.useMutation();

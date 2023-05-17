@@ -18,7 +18,8 @@ import { MainLayout } from "~/layout/main-layout";
 import { FormWrapper } from "~/components/auth/FormWrapper";
 import Link from "next/link";
 import { IconBrandDiscord } from "@tabler/icons-react";
-import { useForm } from "@mantine/form";
+import { useForm, zodResolver } from "@mantine/form";
+import { signInSchema } from "~/schemas/sign-in-schema";
 
 const providerIcons = [
   {
@@ -92,6 +93,7 @@ const CredentialsSignInForm = () => {
     },
     validateInputOnChange: true,
     validateInputOnBlur: true,
+    validate: zodResolver(signInSchema)
   });
 
   const handleSubmit = () => {}

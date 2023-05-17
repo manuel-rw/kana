@@ -13,7 +13,7 @@ import DiscordProvider from "next-auth/providers/discord";
 import Credentials from "next-auth/providers/credentials";
 
 import { env } from "~/env.mjs";
-import { loginSchema } from "~/schemas/login-schema";
+import { signInSchema } from "~/schemas/sign-in-schema";
 import { prisma } from "~/server/db";
 
 /**
@@ -77,11 +77,11 @@ export const authOptions: NextAuthOptions = {
         password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials) {
-        const data = await loginSchema.parseAsync(credentials);
+        const data = await signInSchema.parseAsync(credentials);
 
         const user = await prisma.user.findFirst({
           where: {
-            name: data.name,
+            name: data.username,
           }
         });
 
