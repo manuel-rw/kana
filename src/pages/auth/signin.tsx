@@ -5,9 +5,27 @@ import type {
 import { getProviders, signIn } from "next-auth/react";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "~/server/auth";
-import { Button, Stack, Title } from "@mantine/core";
+import {
+  Button,
+  Divider,
+  PasswordInput,
+  Stack,
+  TextInput,
+  Title,
+  Text,
+} from "@mantine/core";
 import { MainLayout } from "~/layout/main-layout";
 import { FormWrapper } from "~/components/auth/FormWrapper";
+import Link from "next/link";
+import { IconBrandDiscord } from "@tabler/icons-react";
+import { useForm } from "@mantine/form";
+
+const providerIcons = [
+  {
+    id: "discord",
+    icon: IconBrandDiscord,
+  },
+];
 
 export default function SignIn({
   providers,
@@ -18,19 +36,88 @@ export default function SignIn({
         <Title order={2} align="center" mb="lg">
           Sign in
         </Title>
-        <Stack>
-          {Object.values(providers).map((provider) => (
-            <div key={provider.name}>
-              <Button onClick={() => signIn(provider.id)} w="100%">
-                Sign in with {provider.name}
-              </Button>
-            </div>
-          ))}
+        <Text color="dimmed" align="center" size="sm" mb="md">
+          We'll never ask for your credentials via Email. Keep your login data
+          stored securely.
+        </Text>
+        <Stack mb="md">
+          {Object.values(providers)
+            .filter((x) =>
+              providerIcons.flatMap((icon) => icon.id).includes(x.id)
+            )
+            .map((provider) => {
+              const icon = providerIcons.find(
+                (item) => item.id === provider.id
+              );
+              const ButtonIcon = icon ? <icon.icon size="1rem" /> : <></>;
+              return (
+                <div key={provider.name}>
+                  <Button
+                    leftIcon={ButtonIcon}
+                    onClick={() => {
+                      signIn(provider.id);
+                    }}
+                    w="100%"
+                  >
+                    Sign in with {provider.name}
+                  </Button>
+                </div>
+              );
+            })}
         </Stack>
+
+        <Divider label="Or" labelPosition="center" mb="xl" />
+
+        <CredentialsSignInForm />
+
+        <Button
+          component={Link}
+          href="/auth/signup"
+          variant="subtle"
+          w="100%"
+          mt="md"
+        >
+          Don't have an account yet?
+        </Button>
       </FormWrapper>
     </MainLayout>
   );
 }
+
+const CredentialsSignInForm = () => {
+  const form = useForm({
+    initialValues: {
+      username: undefined,
+      password: undefined,
+    },
+    validateInputOnChange: true,
+    validateInputOnBlur: true,
+  });
+
+  const handleSubmit = () => {}
+
+  return (
+    <form onSubmit={form.onSubmit(handleSubmit)}>
+      <Stack>
+        <TextInput
+          w="100%"
+          label="Username"
+          withAsterisk
+          {...form.getInputProps("username")}
+        />
+
+        <PasswordInput
+          w="100%"
+          label="Password"
+          withAsterisk
+          {...form.getInputProps("password")}
+        />
+
+        <Button type="submit">Login</Button>
+      </Stack>
+    </form>
+  );
+};
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const session = await getServerSession(context.req, context.res, authOptions);

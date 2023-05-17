@@ -1,6 +1,17 @@
-import { Button, PasswordInput, Stack, TextInput, Title } from "@mantine/core";
+import {
+  Button,
+  PasswordInput,
+  Stack,
+  TextInput,
+  Title,
+  Text,
+  List,
+  Checkbox,
+  Anchor,
+} from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
 import { NextPage } from "next";
+import Link from "next/link";
 import { FormWrapper } from "~/components/auth/FormWrapper";
 import { MainLayout } from "~/layout/main-layout";
 import { userRegisterFormSchema } from "~/schemas/user-schema";
@@ -11,7 +22,10 @@ const Register: NextPage = () => {
     initialValues: {
       username: undefined,
       password: undefined,
+      acceptTos: false,
     },
+    validateInputOnChange: true,
+    validateInputOnBlur: true,
     validate: zodResolver(userRegisterFormSchema),
   });
 
@@ -25,7 +39,7 @@ const Register: NextPage = () => {
     <>
       <MainLayout>
         <FormWrapper>
-          <Title align="center" mb="lg">
+          <Title order={2} align="center" mb="lg">
             Register an Account
           </Title>
 
@@ -41,9 +55,30 @@ const Register: NextPage = () => {
                 withAsterisk
                 {...form.getInputProps("password")}
               />
+              <Checkbox
+                label={
+                  <Text>
+                    I accept the
+                    <Anchor href="https://mantine.dev" target="_blank" mx={3}>
+                      terms and conditions
+                    </Anchor>
+                  </Text>
+                }
+                {...form.getInputProps("acceptTos")}
+              />
               <Button type="submit">Register</Button>
             </Stack>
           </form>
+
+          <Button
+            component={Link}
+            href="/auth/signin"
+            variant="subtle"
+            w="100%"
+            mt="md"
+          >
+            Already have an account?
+          </Button>
         </FormWrapper>
       </MainLayout>
     </>
