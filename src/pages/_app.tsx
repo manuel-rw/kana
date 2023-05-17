@@ -14,8 +14,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
   return (
     <SessionProvider session={session}>
       <MantineProvider withNormalizeCSS withGlobalStyles>
-
-      <Component {...pageProps} />
+        <Component {...pageProps} />
       </MantineProvider>
     </SessionProvider>
   );

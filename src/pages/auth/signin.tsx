@@ -20,6 +20,7 @@ import Link from "next/link";
 import { IconBrandDiscord } from "@tabler/icons-react";
 import { useForm, zodResolver } from "@mantine/form";
 import { signInSchema } from "~/schemas/sign-in-schema";
+import Head from "next/head";
 
 const providerIcons = [
   {
@@ -33,6 +34,9 @@ export default function SignIn({
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   return (
     <MainLayout>
+      <Head>
+        <title>Sign in</title>
+      </Head>
       <FormWrapper>
         <Title order={2} align="center" mb="lg">
           Sign in

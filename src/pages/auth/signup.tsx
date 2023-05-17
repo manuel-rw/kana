@@ -11,6 +11,7 @@ import {
 } from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
 import { NextPage } from "next";
+import Head from "next/head";
 import Link from "next/link";
 import { FormWrapper } from "~/components/auth/FormWrapper";
 import { MainLayout } from "~/layout/main-layout";
@@ -31,19 +32,25 @@ const Register: NextPage = () => {
 
   const { mutate } = api.register.register.useMutation();
 
-  const handleSubmit = () => {
-    mutate(form.values);
+  const handleSubmit = (values) => {
+    mutate({
+      username: values.username,
+      password: values.password,
+    });
   };
 
   return (
     <>
+      <Head>
+        <title>Sign up</title>
+      </Head>
       <MainLayout>
         <FormWrapper>
           <Title order={2} align="center" mb="lg">
             Register an Account
           </Title>
 
-          <form onSubmit={form.onSubmit(handleSubmit)}>
+          <form onSubmit={form.onSubmit((values) => handleSubmit(values))}>
             <Stack>
               <TextInput
                 label="Username"
