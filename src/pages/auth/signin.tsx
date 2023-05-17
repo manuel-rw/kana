@@ -104,7 +104,8 @@ const CredentialsSignInForm = () => {
     signIn("credentials", {
       redirect: true,
       name: form.values.name,
-      password: form.values.password
+      password: form.values.password,
+      callbackUrl: '/profile'
     }).catch((err) => {});
   };
 
