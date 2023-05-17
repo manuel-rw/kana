@@ -13,6 +13,7 @@ import DiscordProvider from "next-auth/providers/discord";
 import Credentials from "next-auth/providers/credentials";
 
 import { env } from "~/env.mjs";
+import { loginSchema } from "~/schemas/login-schema";
 import { prisma } from "~/server/db";
 import { hashPassword } from "~/utils/security";
 
@@ -77,9 +78,11 @@ export const authOptions: NextAuthOptions = {
         password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials) {
+        const data = await loginSchema.parseAsync(credentials);
+
         const user = await prisma.user.findFirst({
           where: {
-            name: credentials?.name,
+            name: data.name,
           }
         });
 
@@ -87,9 +90,13 @@ export const authOptions: NextAuthOptions = {
           return null;
         }
 
-        const hashedPassword = hashPassword(cred.password, user.salt);
+        const hashedPassword = hashPassword(data.password, user.salt);
+
+        console.log(`Comparing ${hashedPassword} to ${user.password}`);
 
         const isValidPassword = bcrypt.compareSync(hashedPassword, user.password);
+
+        console.log(`Comparison result: ${isValidPassword ? 'true' : 'false'}`);
 
         if (!isValidPassword) {
           return null;
