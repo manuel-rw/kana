@@ -1,4 +1,5 @@
-import { AppShell, Header } from "@mantine/core";
+import Link from "next/link";
+import { AppShell, Group, Header, Text, UnstyledButton } from "@mantine/core";
 import { ReactNode } from "react";
 
 interface MainLayoutProps {
@@ -8,7 +9,19 @@ interface MainLayoutProps {
 export const MainLayout = ({ children }: MainLayoutProps) => {
   return (
     <AppShell
-      header={<Header height={50}>abc</Header>}
+      header={
+        <Header height={50}>
+          <Group position="apart" h="100%" px="md">
+            <Group h="100%" align="center">
+              <UnstyledButton component={Link} href="/">
+                <Text size="xl" weight="bold">
+                  Kana
+                </Text>
+              </UnstyledButton>
+            </Group>
+          </Group>
+        </Header>
+      }
       styles={(theme) => ({
         main: {
           backgroundColor:
