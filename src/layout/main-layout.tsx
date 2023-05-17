@@ -1,15 +1,21 @@
-import Link from "next/link";
 import {
   AppShell,
   Avatar,
+  Button,
   Group,
   Header,
   Menu,
   Text,
   UnstyledButton,
 } from "@mantine/core";
+import {
+  IconLanguageHiragana,
+  IconLogout,
+  IconUser,
+} from "@tabler/icons-react";
+import { useSession } from "next-auth/react";
+import Link from "next/link";
 import { ReactNode } from "react";
-import { IconLanguageHiragana, IconLogout, IconUser } from "@tabler/icons-react";
 
 interface MainLayoutProps {
   children: ReactNode;
@@ -32,19 +38,7 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
             </UnstyledButton>
 
             <Group>
-              <Menu width={150} withArrow withinPortal>
-                <Menu.Target>
-                  <Avatar />
-                </Menu.Target>
-                <Menu.Dropdown>
-                  <Menu.Item icon={<IconUser size="1rem" />}>
-                    Your Profile
-                  </Menu.Item>
-                  <Menu.Item icon={<IconLogout size="1rem" />} color="red">
-                    Sign Out
-                  </Menu.Item>
-                </Menu.Dropdown>
-              </Menu>
+              <Profile />
             </Group>
           </Group>
         </Header>
@@ -60,5 +54,31 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
     >
       {children}
     </AppShell>
+  );
+};
+
+const Profile = () => {
+  const { data: sessionData } = useSession();
+
+  if (!sessionData) {
+    return (
+      <Button component={Link} href="/auth/signin" leftIcon={<IconUser size="1rem" />} variant="default">
+        Login
+      </Button>
+    );
+  }
+
+  return (
+    <Menu width={150} withArrow withinPortal>
+      <Menu.Target>
+        <Avatar />
+      </Menu.Target>
+      <Menu.Dropdown>
+        <Menu.Item icon={<IconUser size="1rem" />}>Your Profile</Menu.Item>
+        <Menu.Item icon={<IconLogout size="1rem" />} color="red">
+          Sign Out
+        </Menu.Item>
+      </Menu.Dropdown>
+    </Menu>
   );
 };
