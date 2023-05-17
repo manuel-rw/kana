@@ -50,7 +50,7 @@ const AuthShowcase: React.FC = () => {
         {secretMessage && <span> - {secretMessage}</span>}
       </p>
       <Group spacing="md">
-        <Button>Register</Button>
+        <Button component={Link} href="/register">Register</Button>
         <Button
           onClick={sessionData ? () => void signOut() : () => void signIn()}
         >
