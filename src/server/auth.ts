@@ -1,11 +1,15 @@
+import { PrismaAdapter } from "@next-auth/prisma-adapter";
+
 import { type GetServerSidePropsContext } from "next";
+
 import {
   getServerSession,
   type NextAuthOptions,
   type DefaultSession,
 } from "next-auth";
 import DiscordProvider from "next-auth/providers/discord";
-import { PrismaAdapter } from "@next-auth/prisma-adapter";
+import CredentialsProvider from "next-auth/providers/credentials";
+
 import { env } from "~/env.mjs";
 import { prisma } from "~/server/db";
 
@@ -60,6 +64,26 @@ export const authOptions: NextAuthOptions = {
      *
      * @see https://next-auth.js.org/providers/github
      */
+    CredentialsProvider({
+      async authorize(credentials) {
+        const authResponse = await fetch("/users/login", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(credentials),
+        });
+
+        if (!authResponse.ok) {
+          return null;
+        }
+
+        const user = await authResponse.json();
+
+        return user;
+      },
+      credentials: undefined,
+    }),
   ],
 };
 
