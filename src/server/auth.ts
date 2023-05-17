@@ -1,5 +1,7 @@
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 
+import bcrypt from 'bcrypt';
+
 import { type GetServerSidePropsContext } from "next";
 
 import {
@@ -8,7 +10,7 @@ import {
   type DefaultSession,
 } from "next-auth";
 import DiscordProvider from "next-auth/providers/discord";
-import CredentialsProvider from "next-auth/providers/credentials";
+import Credentials from "next-auth/providers/credentials";
 
 import { env } from "~/env.mjs";
 import { prisma } from "~/server/db";
@@ -64,25 +66,37 @@ export const authOptions: NextAuthOptions = {
      *
      * @see https://next-auth.js.org/providers/github
      */
-    CredentialsProvider({
+    Credentials({
+      name: 'credentials',
+      credentials: {
+        name: {
+          label: 'Username',
+          type: 'text',
+        },
+        password: { label: 'Password', type: 'password' },
+      },
       async authorize(credentials) {
-        const authResponse = await fetch("/users/login", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(credentials),
+        const user = await prisma.user.findFirst({
+          where: {
+            name: credentials?.name,
+          }
         });
 
-        if (!authResponse.ok) {
+        if (!user) {
           return null;
         }
 
-        const user = await authResponse.json();
+        const isValidPassword = bcrypt.compareSync(cred.password, user.password);
 
-        return user;
+        if (!isValidPassword) {
+          return null;
+        }
+
+        return {
+          id: user.id,
+          name: user.name,
+        };
       },
-      credentials: undefined,
     }),
   ],
 };
