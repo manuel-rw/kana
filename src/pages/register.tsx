@@ -43,10 +43,12 @@ const Register: NextPage = () => {
                 <Stack>
                   <TextInput
                     label="Username"
+                    withAsterisk
                     {...form.getInputProps("username")}
                   />
                   <PasswordInput
                     label="Password"
+                    withAsterisk
                     {...form.getInputProps("password")}
                   />
                   <Button type="submit">Register</Button>
