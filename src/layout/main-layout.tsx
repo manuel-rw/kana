@@ -1,7 +1,15 @@
 import Link from "next/link";
-import { AppShell, Group, Header, Text, UnstyledButton } from "@mantine/core";
+import {
+  AppShell,
+  Avatar,
+  Group,
+  Header,
+  Menu,
+  Text,
+  UnstyledButton,
+} from "@mantine/core";
 import { ReactNode } from "react";
-import { IconLanguageHiragana  } from '@tabler/icons-react';
+import { IconLanguageHiragana, IconLogout, IconUser } from "@tabler/icons-react";
 
 interface MainLayoutProps {
   children: ReactNode;
@@ -22,6 +30,22 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
                 </Text>
               </Group>
             </UnstyledButton>
+
+            <Group>
+              <Menu width={150} withArrow withinPortal>
+                <Menu.Target>
+                  <Avatar />
+                </Menu.Target>
+                <Menu.Dropdown>
+                  <Menu.Item icon={<IconUser size="1rem" />}>
+                    Your Profile
+                  </Menu.Item>
+                  <Menu.Item icon={<IconLogout size="1rem" />} color="red">
+                    Sign Out
+                  </Menu.Item>
+                </Menu.Dropdown>
+              </Menu>
+            </Group>
           </Group>
         </Header>
       }
