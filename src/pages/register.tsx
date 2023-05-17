@@ -1,6 +1,7 @@
 import {
   Button,
   Card,
+  Center,
   Container,
   PasswordInput,
   Stack,
@@ -31,27 +32,29 @@ const Register: NextPage = () => {
   return (
     <>
       <MainLayout>
-        <Container maw={600}>
-          <Card>
-            <Title align="center" mb="lg">
-              Register an account
-            </Title>
+        <Center h="100%" w="100%">
+          <Container maw="100%" w={600}>
+            <Card>
+              <Title align="center" mb="lg">
+                Register an Account
+              </Title>
 
-            <form onSubmit={form.onSubmit(handleSubmit)}>
-              <Stack>
-                <TextInput
-                  label="Username"
-                  {...form.getInputProps("username")}
-                />
-                <PasswordInput
-                  label="Password"
-                  {...form.getInputProps("password")}
-                />
-                <Button type="submit">Register</Button>
-              </Stack>
-            </form>
-          </Card>
-        </Container>
+              <form onSubmit={form.onSubmit(handleSubmit)}>
+                <Stack>
+                  <TextInput
+                    label="Username"
+                    {...form.getInputProps("username")}
+                  />
+                  <PasswordInput
+                    label="Password"
+                    {...form.getInputProps("password")}
+                  />
+                  <Button type="submit">Register</Button>
+                </Stack>
+              </form>
+            </Card>
+          </Container>
+        </Center>
       </MainLayout>
     </>
   );
