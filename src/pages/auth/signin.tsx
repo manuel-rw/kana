@@ -92,15 +92,21 @@ export default function SignIn({
 const CredentialsSignInForm = () => {
   const form = useForm({
     initialValues: {
-      username: undefined,
+      name: undefined,
       password: undefined,
     },
     validateInputOnChange: true,
     validateInputOnBlur: true,
-    validate: zodResolver(signInSchema)
+    validate: zodResolver(signInSchema),
   });
 
-  const handleSubmit = () => {}
+  const handleSubmit = () => {
+    signIn("credentials", {
+      redirect: true,
+      name: form.values.name,
+      password: form.values.password
+    }).catch((err) => {});
+  };
 
   return (
     <form onSubmit={form.onSubmit(handleSubmit)}>
@@ -109,7 +115,7 @@ const CredentialsSignInForm = () => {
           w="100%"
           label="Username"
           withAsterisk
-          {...form.getInputProps("username")}
+          {...form.getInputProps("name")}
         />
 
         <PasswordInput

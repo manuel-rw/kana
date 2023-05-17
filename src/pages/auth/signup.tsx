@@ -1,22 +1,26 @@
 import {
+  Alert,
+  Anchor,
   Button,
+  Checkbox,
   PasswordInput,
   Stack,
+  Text,
   TextInput,
   Title,
-  Text,
-  List,
-  Checkbox,
-  Anchor,
 } from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
+import { IconAlertTriangle } from "@tabler/icons-react";
 import { NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
+import { z } from "zod";
 import { FormWrapper } from "~/components/auth/FormWrapper";
 import { MainLayout } from "~/layout/main-layout";
 import { signUpFormSchema } from "~/schemas/sign-up-schema";
 import { api } from "~/utils/api";
+
+type FormType = z.infer<typeof signUpFormSchema>;
 
 const Register: NextPage = () => {
   const form = useForm({
@@ -30,13 +34,11 @@ const Register: NextPage = () => {
     validate: zodResolver(signUpFormSchema),
   });
 
-  const { mutate } = api.register.register.useMutation();
+  const { mutate, isError, error, isLoading } =
+    api.register.register.useMutation();
 
-  const handleSubmit = (values) => {
-    mutate({
-      username: values.username,
-      password: values.password,
-    });
+  const handleSubmit = (values: FormType) => {
+    mutate(values);
   };
 
   return (
@@ -73,7 +75,15 @@ const Register: NextPage = () => {
                 }
                 {...form.getInputProps("acceptTos")}
               />
-              <Button type="submit">Register</Button>
+              <Button type="submit" loading={isLoading}>
+                Register
+              </Button>
+
+              {isError && (
+                <Alert color="red" icon={<IconAlertTriangle size="1rem" />}>
+                  <Text color="red">{error.message}</Text>
+                </Alert>
+              )}
             </Stack>
           </form>
 

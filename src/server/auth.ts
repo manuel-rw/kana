@@ -81,7 +81,7 @@ export const authOptions: NextAuthOptions = {
 
         const user = await prisma.user.findFirst({
           where: {
-            name: data.username,
+            name: data.name,
           }
         });
 
@@ -89,11 +89,15 @@ export const authOptions: NextAuthOptions = {
           return null;
         }
 
+        console.log(`user ${user.id} is trying to log in. checking password...`);
         const isValidPassword = bcrypt.compareSync(data.password, user.password);
 
         if (!isValidPassword) {
+          console.log(`password for user ${user.id} was incorrect`);
           return null;
         }
+
+        console.log(`user ${user.id} successfully authorized`);
 
         return {
           id: user.id,
@@ -103,7 +107,7 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   pages: {
-    signIn: '/auth/signin'
+    // signIn: '/auth/signin'
   }
 };
 
