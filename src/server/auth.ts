@@ -14,6 +14,7 @@ import Credentials from "next-auth/providers/credentials";
 
 import { env } from "~/env.mjs";
 import { prisma } from "~/server/db";
+import { hashPassword } from "~/utils/security";
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
@@ -86,7 +87,9 @@ export const authOptions: NextAuthOptions = {
           return null;
         }
 
-        const isValidPassword = bcrypt.compareSync(cred.password, user.password);
+        const hashedPassword = hashPassword(cred.password, user.salt);
+
+        const isValidPassword = bcrypt.compareSync(hashedPassword, user.password);
 
         if (!isValidPassword) {
           return null;

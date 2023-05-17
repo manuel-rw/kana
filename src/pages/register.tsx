@@ -9,13 +9,9 @@ import {
 } from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
 import { NextPage } from "next";
-import { z } from "zod";
 import { MainLayout } from "~/layout/main-layout";
-
-const schema = z.object({
-  username: z.string(),
-  password: z.string(),
-});
+import { userRegisterFormSchema } from "~/schemas/user-schema";
+import { api } from "~/utils/api";
 
 const Register: NextPage = () => {
   const form = useForm({
@@ -23,12 +19,14 @@ const Register: NextPage = () => {
       username: undefined,
       password: undefined,
     },
-    validate: zodResolver(schema),
+    validate: zodResolver(userRegisterFormSchema),
   });
 
-const handleSubmit = () =>  {
+  const { mutate } = api.register.register.useMutation();
 
-}
+  const handleSubmit = () => {
+    mutate(form.values);
+  };
 
   return (
     <>
