@@ -44,13 +44,21 @@ declare module "next-auth" {
  */
 export const authOptions: NextAuthOptions = {
   callbacks: {
-    session: ({ session, user }) => ({
-      ...session,
-      user: {
-        ...session.user,
-        id: user.id,
-      },
-    }),
+    jwt: ({ token }) => token,
+    session({ session, token }) {
+      if (token && session.user) {
+        // eslint-disable-next-line no-param-reassign
+        session.user.id = token.id as string;
+        // eslint-disable-next-line no-param-reassign
+        session.user.name = token.name as string;
+      }
+
+      return session;
+    },
+  },
+  session: {
+    strategy: 'jwt',
+    maxAge: 30 * 24 * 60 * 60, // 30 days
   },
   adapter: PrismaAdapter(prisma),
   providers: [
