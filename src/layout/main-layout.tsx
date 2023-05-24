@@ -13,10 +13,10 @@ import {
   IconLogout,
   IconUser,
 } from "@tabler/icons-react";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import Head from "next/head";
 import Link from "next/link";
-import { ReactNode } from "react";
+import { type ReactNode } from "react";
 
 interface MainLayoutProps {
   children: ReactNode;
@@ -85,8 +85,20 @@ const Profile = () => {
         <Avatar />
       </Menu.Target>
       <Menu.Dropdown>
-        <Menu.Item icon={<IconUser size="1rem" />}>Your Profile</Menu.Item>
-        <Menu.Item icon={<IconLogout size="1rem" />} color="red">
+        <Menu.Item
+          icon={<IconUser size="1rem" />}
+          component={Link}
+          href="/profile"
+        >
+          Your Profile
+        </Menu.Item>
+        <Menu.Item
+          onClick={async () => {
+            await signOut();
+          }}
+          icon={<IconLogout size="1rem" />}
+          color="red"
+        >
           Sign Out
         </Menu.Item>
       </Menu.Dropdown>
