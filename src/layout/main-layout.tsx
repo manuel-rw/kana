@@ -43,7 +43,9 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
               </UnstyledButton>
 
               <Group>
-                <Button variant="light">Practice</Button>
+                <Button variant="light" component={Link} href="/practice">
+                  Practice
+                </Button>
                 <Profile />
               </Group>
             </Group>
