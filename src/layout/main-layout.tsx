@@ -16,7 +16,8 @@ import {
 import { signOut, useSession } from "next-auth/react";
 import Head from "next/head";
 import Link from "next/link";
-import { type ReactNode } from "react";
+import { ReactNode } from "react";
+import { DarkModeToggle } from "./dark-mode-toggle";
 
 interface MainLayoutProps {
   children: ReactNode;
@@ -46,6 +47,7 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
                 <Button variant="light" component={Link} href="/practice">
                   Practice
                 </Button>
+                <DarkModeToggle />
                 <Profile />
               </Group>
             </Group>
