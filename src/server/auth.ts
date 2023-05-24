@@ -90,7 +90,7 @@ export const authOptions: NextAuthOptions = {
         }
 
         console.log(`user ${user.id} is trying to log in. checking password...`);
-        const isValidPassword = bcrypt.compareSync(data.password, user.password);
+        const isValidPassword = await bcrypt.compare(data.password, user.password);
 
         if (!isValidPassword) {
           console.log(`password for user ${user.id} was incorrect`);
