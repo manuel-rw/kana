@@ -30,13 +30,13 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
       </Head>
       <AppShell
         header={
-          <Header height={50}>
-            <Group position="apart" h="100%" px="md">
+          <Header height={50} bg="blue">
+            <Group position="apart" h="100%" pl="md" pr={4}>
               <UnstyledButton component={Link} href="/">
                 <Group h="100%" align="center" spacing="xs">
-                  <IconLanguageHiragana />
+                  <IconLanguageHiragana color="white" />
 
-                  <Text size="xl" weight="bold">
+                  <Text size="xl" weight="bold" color="white">
                     Kana
                   </Text>
                 </Group>
@@ -86,7 +86,7 @@ const Profile = () => {
     <Menu width={150} withArrow withinPortal>
       <Menu.Target>
         <UnstyledButton>
-          <Avatar />
+          <Avatar src={sessionData.user.image} radius="xl" />
         </UnstyledButton>
       </Menu.Target>
       <Menu.Dropdown>

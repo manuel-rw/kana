@@ -44,7 +44,7 @@ const ProfilePage: NextPage = () => {
               p="md"
             >
               <Stack justify="end" h="100%">
-                <Avatar />
+                <Avatar src={data.user.image} />
                 <Stack spacing={0}>
                   <Text color="white" size="lg" weight="bold">
                     {data.user.name}
