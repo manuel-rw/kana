@@ -8,8 +8,8 @@ import {
   Stack,
   Box,
 } from "@mantine/core";
-import { NextPage } from "next";
-import { useSession } from "next-auth/react";
+import { type NextPage } from "next";
+import { getSession, useSession } from "next-auth/react";
 import { MainLayout } from "~/layout/main-layout";
 
 const ProfilePage: NextPage = () => {
@@ -60,5 +60,22 @@ const ProfilePage: NextPage = () => {
     </MainLayout>
   );
 };
+
+export async function getServerSideProps(context: any) {
+  const session = await getSession(context);
+
+  if (!session) {
+    return {
+      redirect: {
+        destination: '/auth/signin',
+        permanent: false,
+      },
+    }
+  }
+
+  return {
+    props: { session }
+  }
+}
 
 export default ProfilePage;

@@ -43,6 +43,7 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
               </UnstyledButton>
 
               <Group>
+                <Button variant="light">Practice</Button>
                 <Profile />
               </Group>
             </Group>
@@ -82,7 +83,9 @@ const Profile = () => {
   return (
     <Menu width={150} withArrow withinPortal>
       <Menu.Target>
-        <Avatar />
+        <UnstyledButton>
+          <Avatar />
+        </UnstyledButton>
       </Menu.Target>
       <Menu.Dropdown>
         <Menu.Item
