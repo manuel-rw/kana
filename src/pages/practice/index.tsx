@@ -34,7 +34,7 @@ const cards: PracticeCard[] = [
     title: "Basic Sentences",
     description:
       "Practice your basic communication skills while translating common sentences, answering to questions and communicating with friends",
-    footer: <Button fullWidth>Start practice</Button>,
+    footer: <Button fullWidth disabled>Coming soon</Button>,
     isRecommended: false,
   },
 ];
