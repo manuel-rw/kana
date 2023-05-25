@@ -10,6 +10,7 @@ import {
 } from "@mantine/core";
 import { type NextPage } from "next";
 import Head from "next/head";
+import Link from "next/link";
 import { type ReactNode } from "react";
 import { MainLayout } from "~/layout/main-layout";
 
@@ -25,7 +26,7 @@ const cards: PracticeCard[] = [
   {
     title: "Kana",
     description: "Practice your Hiragana and Katakana",
-    footer: <Button fullWidth>Start practice</Button>,
+    footer: <Button component={Link} href="/learn/kana/" fullWidth>Start practice</Button>,
     isRecommended: true,
     imageSrc:
       "https://files.tofugu.com/articles/japanese/2014-06-30-learn-hiragana/header-2560x.jpg",

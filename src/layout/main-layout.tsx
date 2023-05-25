@@ -44,7 +44,7 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
               </UnstyledButton>
 
               <Group>
-                <Button variant="light" component={Link} href="/practice">
+                <Button variant="light" component={Link} href="/learn">
                   Practice
                 </Button>
                 <DarkModeToggle />
