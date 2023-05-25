@@ -13,14 +13,16 @@ import {
   TextInput,
   Title,
   Text,
+  Alert,
 } from "@mantine/core";
 import { MainLayout } from "~/layout/main-layout";
 import { FormWrapper } from "~/components/auth/FormWrapper";
 import Link from "next/link";
-import { IconBrandDiscord } from "@tabler/icons-react";
+import { IconAlertTriangle, IconBrandDiscord } from "@tabler/icons-react";
 import { useForm, zodResolver } from "@mantine/form";
 import { signInSchema } from "~/schemas/sign-in-schema";
 import Head from "next/head";
+import { useRouter } from "next/router";
 
 const providerIcons = [
   {
@@ -41,7 +43,7 @@ export default function SignIn({
         <Title order={2} align="center" mb="lg">
           Sign in
         </Title>
-        <Text color="dimmed" align="center" size="sm" mb="md">
+        <Text align="center" size="sm" mb="md">
           We'll never ask for your credentials via Email. Keep your login data
           stored securely.
         </Text>
@@ -89,7 +91,39 @@ export default function SignIn({
   );
 }
 
+const ErrorDisplay = ({ error }: { error: string }) => {
+  switch (error) {
+    case "CredentialsSignin":
+      return (
+        <Alert icon={<IconAlertTriangle size="1rem" />} color="red">
+          Your credentials are incorrect or this account doesn't exist. Please
+          try again
+        </Alert>
+      );
+    case "OAuthSignin":
+    case "OAuthCallback":
+    case "OAuthCreateAccount":
+      return (
+        <Alert icon={<IconAlertTriangle size="1rem" />} color="red">
+          Unable to sign you in with this account. Please try again later
+        </Alert>
+      );
+    case "Default":
+      return (
+        <Alert icon={<IconAlertTriangle size="1rem" />} color="red">
+          An unexpected error occurred during the log in. Please try again
+        </Alert>
+      );
+  }
+
+  return null;
+};
+
 const CredentialsSignInForm = () => {
+  const { query } = useRouter();
+
+  const signInError = query.error as string;
+
   const form = useForm({
     initialValues: {
       name: undefined,
@@ -105,7 +139,7 @@ const CredentialsSignInForm = () => {
       redirect: true,
       name: form.values.name,
       password: form.values.password,
-      callbackUrl: '/profile'
+      callbackUrl: "/profile",
     }).catch((err) => {});
   };
 
@@ -115,6 +149,7 @@ const CredentialsSignInForm = () => {
         <TextInput
           w="100%"
           label="Username"
+          placeholder="Your username"
           withAsterisk
           {...form.getInputProps("name")}
         />
@@ -122,9 +157,12 @@ const CredentialsSignInForm = () => {
         <PasswordInput
           w="100%"
           label="Password"
+          placeholder="Your password"
           withAsterisk
           {...form.getInputProps("password")}
         />
+
+        {signInError && <ErrorDisplay error={signInError} />}
 
         <Button type="submit">Login</Button>
       </Stack>
