@@ -24,8 +24,8 @@ interface PracticeCard {
 
 const cards: PracticeCard[] = [
   {
-    title: "Kana",
-    description: "Practice your Hiragana and Katakana",
+    title: "Practice reading Kana",
+    description: "In this course, you'll practice reading Hiragana and Katakana, the most basic writing in Japanese. Being able to read Hiragana and Katakana will enable you, to read and write basic sentences in Japanese.",
     footer: <Button component={Link} href="/learn/kana/" fullWidth>Start practice</Button>,
     isRecommended: true,
     imageSrc:
@@ -44,10 +44,10 @@ const PracticePage: NextPage = () => {
   return (
     <MainLayout>
       <Head>
-        <title>Practice</title>
+        <title>Learn Japanese</title>
       </Head>
 
-      <Title mb="lg">Practice</Title>
+      <Title mb="lg">What's up on your mind today?</Title>
 
       <Grid justify="stretch">
         {cards.map((card, index) => (
