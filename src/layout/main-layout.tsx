@@ -33,15 +33,21 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
         header={
           <Header height={50} bg="blue">
             <Group position="apart" h="100%" pl="md" pr={4}>
-              <UnstyledButton component={Link} href="/">
-                <Group h="100%" align="center" spacing="xs">
-                  <IconLanguageHiragana color="white" />
+              <Group>
+                <UnstyledButton component={Link} href="/" mr="xl">
+                  <Group h="100%" align="center" spacing="xs">
+                    <IconLanguageHiragana color="white" />
 
-                  <Text size="xl" weight="bold" color="white">
-                    Kana
-                  </Text>
-                </Group>
-              </UnstyledButton>
+                    <Text size="xl" weight="bold" color="white">
+                      Kana
+                    </Text>
+                  </Group>
+                </UnstyledButton>
+
+                <UnstyledButton component={Link} href="/cli">
+                  <Text color="white">CLI</Text>
+                </UnstyledButton>
+              </Group>
 
               <Group>
                 <Button variant="light" component={Link} href="/learn">
