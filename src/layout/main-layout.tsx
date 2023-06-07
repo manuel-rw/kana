@@ -25,7 +25,7 @@ interface MainLayoutProps {
 }
 
 export const MainLayout = ({ children }: MainLayoutProps) => {
-  const {classes} = useStyles();
+  const { classes } = useStyles();
   return (
     <>
       <Head>
@@ -35,7 +35,7 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
         header={
           <Header height={50} className={classes.main}>
             <Group position="apart" h="100%" pl="md" pr={4}>
-              <Group>
+              <Group spacing="xl">
                 <UnstyledButton component={Link} href="/" mr="xl">
                   <Group h="100%" align="center" spacing="xs">
                     <IconLanguageHiragana color="white" />
@@ -46,15 +46,18 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
                   </Group>
                 </UnstyledButton>
 
+                <UnstyledButton component={Link} href="/learn">
+                  <Text className={classes.navItem}>Learn</Text>
+                </UnstyledButton>
+
                 <UnstyledButton component={Link} href="/cli">
-                  <Text color="white">CLI</Text>
+                  <Text className={classes.navItem}>
+                    Command Line Interface
+                  </Text>
                 </UnstyledButton>
               </Group>
 
               <Group>
-                <Button className={classes.btn} component={Link} href="/learn">
-                  Practice
-                </Button>
                 <DarkModeToggle />
                 <Profile />
               </Group>
@@ -121,11 +124,15 @@ const Profile = () => {
   );
 };
 
-const useStyles = createStyles(({colors, colorScheme}) => ({
+const useStyles = createStyles(({ colors, colorScheme }) => ({
+  navItem: {
+    color: colors.gray[2],
+    "&:hover": { color: colors.gray[0] },
+  },
   main: {
-    backgroundColor: colors.grape[colorScheme === 'dark'? 7 : 4]
+    backgroundColor: colors.grape[colorScheme === "dark" ? 7 : 4],
   },
   btn: {
-    backgroundColor: colors.grape[colorScheme === 'dark'? 4 : 7]
+    backgroundColor: colors.grape[colorScheme === "dark" ? 4 : 7],
   },
 }));

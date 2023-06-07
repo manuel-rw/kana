@@ -44,7 +44,7 @@ const PracticePage: NextPage = () => {
   return (
     <MainLayout>
       <Head>
-        <title>Learn Japanese</title>
+        <title>Learn • Profile</title>
       </Head>
 
       <Title mb="lg">What's up on your mind today?</Title>

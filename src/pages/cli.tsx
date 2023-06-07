@@ -3,6 +3,7 @@ import { useForm, zodResolver } from "@mantine/form";
 import { useDisclosure } from "@mantine/hooks";
 import { IconSend, IconAlertTriangle } from "@tabler/icons-react";
 import { type NextPage } from "next";
+import Head from "next/head";
 import { MainLayout } from "~/layout/main-layout";
 import { commandSchema } from "~/schemas/command-schema";
 import { api } from "~/utils/api";
@@ -44,6 +45,9 @@ const CommandForm = () => {
 
   return (
     <form onSubmit={form.onSubmit(handleSubmit)}>
+      <Head>
+        <title>Command Line • Kana</title>
+      </Head>
       <Card pos="relative">
         <LoadingOverlay visible={visible || isLoading} overlayBlur={2} />
         <Stack mb="md">

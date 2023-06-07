@@ -57,7 +57,7 @@ const Register: NextPage = () => {
   return (
     <>
       <Head>
-        <title>Sign up</title>
+        <title>Sign up • Profile</title>
       </Head>
       <MainLayout>
         <FormWrapper>

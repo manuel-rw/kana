@@ -37,7 +37,7 @@ export default function SignIn({
   return (
     <MainLayout>
       <Head>
-        <title>Sign in</title>
+        <title>Sign in • Profile</title>
       </Head>
       <FormWrapper>
         <Title order={2} align="center" mb="lg">

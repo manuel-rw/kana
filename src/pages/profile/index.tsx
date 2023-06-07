@@ -10,6 +10,7 @@ import {
 } from "@mantine/core";
 import { type NextPage } from "next";
 import { getSession, useSession } from "next-auth/react";
+import Head from "next/head";
 import { MainLayout } from "~/layout/main-layout";
 
 const ProfilePage: NextPage = () => {
@@ -21,6 +22,9 @@ const ProfilePage: NextPage = () => {
 
   return (
     <MainLayout>
+      <Head>
+        <title>{data.user.name} • Profile</title>
+      </Head>
       <Box maw={600} mx="auto">
         <Card mb="md">
           <Card.Section h={200} pos="relative">
