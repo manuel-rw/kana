@@ -25,11 +25,12 @@ const ProfilePage: NextPage = () => {
         <Card mb="md">
           <Card.Section h={200} pos="relative">
             <Image
-              src="https://source.unsplash.com/featured/?hiragana"
+              src={data.user.image}
               w="100%"
               h="100%"
               fit="cover"
               alt=""
+              style={{ filter: 'blur(6px)' }}
             />
 
             <Overlay

@@ -10,11 +10,13 @@ import {
   Title,
 } from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
+import { notifications } from "@mantine/notifications";
 import { IconAlertTriangle } from "@tabler/icons-react";
-import { NextPage } from "next";
+import { type NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
-import { z } from "zod";
+import { useRouter } from "next/router";
+import { type z } from "zod";
 import { FormWrapper } from "~/components/auth/FormWrapper";
 import { MainLayout } from "~/layout/main-layout";
 import { signUpFormSchema } from "~/schemas/sign-up-schema";
@@ -23,6 +25,8 @@ import { api } from "~/utils/api";
 type FormType = z.infer<typeof signUpFormSchema>;
 
 const Register: NextPage = () => {
+  const { push } = useRouter();
+
   const form = useForm({
     initialValues: {
       username: undefined,
@@ -34,11 +38,20 @@ const Register: NextPage = () => {
     validate: zodResolver(signUpFormSchema),
   });
 
-  const { mutate, isError, error, isLoading } =
+  const { mutateAsync, isError, error, isLoading } =
     api.register.register.useMutation();
 
   const handleSubmit = (values: FormType) => {
-    mutate(values);
+    mutateAsync(values)
+      .then(async () => {
+        notifications.show({
+          title: "Account created",
+          message: "Your account has been created. You can log in now",
+          color: 'green',
+        });
+        await push("/auth/signin");
+      })
+      .catch(() => {});
   };
 
   return (
