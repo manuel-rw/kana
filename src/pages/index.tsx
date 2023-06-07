@@ -17,9 +17,7 @@ const Home: NextPage = () => {
       </Head>
 
       <MainLayout>
-        <Title>
-          Kana App Modul 183
-        </Title>
+        <Title>Kana App Modul 183</Title>
         <div className="flex flex-col items-center gap-2">
           <p className="text-2xl text-white">
             {hello.data ? hello.data.greeting : "Loading tRPC query..."}
@@ -48,7 +46,9 @@ const AuthShowcase: React.FC = () => {
         {secretMessage && <span> - {secretMessage}</span>}
       </p>
       <Group spacing="md">
-        <Button component={Link} href="/auth/signup">Register</Button>
+        <Button component={Link} href="/auth/signup">
+          Register
+        </Button>
         <Button
           onClick={sessionData ? () => void signOut() : () => void signIn()}
         >

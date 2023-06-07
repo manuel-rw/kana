@@ -7,6 +7,7 @@ import {
   Menu,
   Text,
   UnstyledButton,
+  createStyles,
 } from "@mantine/core";
 import {
   IconLanguageHiragana,
@@ -24,6 +25,7 @@ interface MainLayoutProps {
 }
 
 export const MainLayout = ({ children }: MainLayoutProps) => {
+  const {classes} = useStyles();
   return (
     <>
       <Head>
@@ -31,20 +33,26 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
       </Head>
       <AppShell
         header={
-          <Header height={50} bg="blue">
+          <Header height={50} className={classes.main}>
             <Group position="apart" h="100%" pl="md" pr={4}>
-              <UnstyledButton component={Link} href="/">
-                <Group h="100%" align="center" spacing="xs">
-                  <IconLanguageHiragana color="white" />
+              <Group>
+                <UnstyledButton component={Link} href="/" mr="xl">
+                  <Group h="100%" align="center" spacing="xs">
+                    <IconLanguageHiragana color="white" />
 
-                  <Text size="xl" weight="bold" color="white">
-                    Kana
-                  </Text>
-                </Group>
-              </UnstyledButton>
+                    <Text size="xl" weight="bold" color="white">
+                      Kana
+                    </Text>
+                  </Group>
+                </UnstyledButton>
+
+                <UnstyledButton component={Link} href="/cli">
+                  <Text color="white">CLI</Text>
+                </UnstyledButton>
+              </Group>
 
               <Group>
-                <Button variant="light" component={Link} href="/learn">
+                <Button className={classes.btn} component={Link} href="/learn">
                   Practice
                 </Button>
                 <DarkModeToggle />
@@ -112,3 +120,12 @@ const Profile = () => {
     </Menu>
   );
 };
+
+const useStyles = createStyles(({colors, colorScheme}) => ({
+  main: {
+    backgroundColor: colors.grape[colorScheme === 'dark'? 7 : 4]
+  },
+  btn: {
+    backgroundColor: colors.grape[colorScheme === 'dark'? 4 : 7]
+  },
+}));
