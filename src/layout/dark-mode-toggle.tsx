@@ -1,8 +1,10 @@
-import { ActionIcon, Group, useMantineColorScheme } from '@mantine/core';
+import { ActionIcon, Group, useMantineColorScheme, 
+    createStyles } from '@mantine/core';
 import { IconSun, IconMoonStars } from '@tabler/icons-react';
 
 export const DarkModeToggle = () => {
     const { colorScheme, toggleColorScheme } = useMantineColorScheme();
+    const {classes} = useStyles();
 
     return (
         <ActionIcon
@@ -13,12 +15,24 @@ export const DarkModeToggle = () => {
                     theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[0],
                 color: theme.colorScheme === 'dark' ? theme.colors.yellow[4] : theme.colors.blue[6],
             })}
+            bg='transparent'
+            className={classes.main}
         >
             {colorScheme === 'dark' ? (
-                <IconSun />
+                <IconSun className={classes.icon} />
             ) : (
-                <IconMoonStars />
+                <IconMoonStars className={classes.icon}  />
             )}
         </ActionIcon>
     );
 }
+
+
+const useStyles = createStyles(({}) => ({
+    main: {
+      ':hover': { backgroundColor: 'transparent'}
+    },
+    icon: {
+      color: 'white'
+    }
+  }));
