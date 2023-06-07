@@ -7,6 +7,7 @@ import {
   Menu,
   Text,
   UnstyledButton,
+  createStyles,
 } from "@mantine/core";
 import {
   IconLanguageHiragana,
@@ -24,6 +25,7 @@ interface MainLayoutProps {
 }
 
 export const MainLayout = ({ children }: MainLayoutProps) => {
+  const {classes} = useStyles();
   return (
     <>
       <Head>
@@ -31,7 +33,7 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
       </Head>
       <AppShell
         header={
-          <Header height={50} bg="blue">
+          <Header height={50} className={classes.main}>
             <Group position="apart" h="100%" pl="md" pr={4}>
               <Group>
                 <UnstyledButton component={Link} href="/" mr="xl">
@@ -50,7 +52,7 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
               </Group>
 
               <Group>
-                <Button variant="light" component={Link} href="/learn">
+                <Button className={classes.btn} component={Link} href="/learn">
                   Practice
                 </Button>
                 <DarkModeToggle />
@@ -118,3 +120,12 @@ const Profile = () => {
     </Menu>
   );
 };
+
+const useStyles = createStyles(({colors, colorScheme}) => ({
+  main: {
+    backgroundColor: colors.grape[colorScheme === 'dark'? 7 : 4]
+  },
+  btn: {
+    backgroundColor: colors.grape[colorScheme === 'dark'? 4 : 7]
+  },
+}));
