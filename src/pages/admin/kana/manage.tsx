@@ -12,11 +12,19 @@ import {
   Space,
   Stack,
 } from "@mantine/core";
-import { useForm } from "@mantine/form";
+import { useForm, zodResolver } from "@mantine/form";
 import { modals } from "@mantine/modals";
-import { IconDots, IconPencil, IconPlus, IconTrash } from "@tabler/icons-react";
+import {
+  IconDots,
+  IconLanguageKatakana,
+  IconPencil,
+  IconPlus,
+  IconSearch,
+  IconTrash,
+} from "@tabler/icons-react";
 import { type NextPage } from "next";
 import Head from "next/head";
+import { z } from "zod";
 import { MainLayout } from "~/layout/main-layout";
 import { api } from "~/utils/api";
 
@@ -48,6 +56,17 @@ const KanaGroupTypesTables = () => {
 
   if (isLoading || !data) {
     return <>loading...</>;
+  }
+
+  if (data.length === 0) {
+    return (
+      <Stack align="center" spacing="xs">
+        <IconLanguageKatakana />
+        <Title align="center" order={4}>
+          There are no Kana saved yet
+        </Title>
+      </Stack>
+    );
   }
 
   return (
@@ -91,15 +110,17 @@ const KanaGroupTypesTables = () => {
               <tr>
                 {type.groups.map((group, typeIndex) => (
                   <th key={typeIndex}>
-                    <UnstyledButton onClick={() => {
-                      modals.openContextModal({
-                        modal: 'editKanaGroupModal',
-                        title: 'Edit Kana Group',
-                        innerProps: {
-                          group: group,
-                        }
-                      });
-                    }}>
+                    <UnstyledButton
+                      onClick={() => {
+                        modals.openContextModal({
+                          modal: "editKanaGroupModal",
+                          title: "Edit Kana Group",
+                          innerProps: {
+                            group: group,
+                          },
+                        });
+                      }}
+                    >
                       <Text>{group.name}</Text>
                     </UnstyledButton>
                   </th>
@@ -159,6 +180,15 @@ const KanaGroupTypesTables = () => {
                     <td colSpan={2}></td>
                   </tr>
                 ))}
+              {type.groups.length === 0 && (
+                <Stack align="center" py="md" spacing={4}>
+                  <IconSearch opacity={0.5} />
+                  <Text color="dimmed">No groups available</Text>
+                  <Text color="dimmed" size="sm">
+                    Use the button at the top right to add new groups
+                  </Text>
+                </Stack>
+              )}
             </tbody>
 
             <tfoot>
@@ -220,11 +250,14 @@ const AddNewKanaGroupTypeForm = () => {
     initialValues: {
       name: "",
     },
+    validate: zodResolver(z.object({ name: z.string().min(1).max(999) })),
+    validateInputOnBlur: true,
+    validateInputOnChange: true,
   });
   const { mutate } = api.kana.upsertKanaGroupType.useMutation({
     onSuccess: () => {
       void context.kana.getAll.invalidate();
-    }
+    },
   });
 
   const handleSubmit = () => {
@@ -238,14 +271,16 @@ const AddNewKanaGroupTypeForm = () => {
   return (
     <form onSubmit={form.onSubmit(handleSubmit)}>
       <Card>
-        <Group>
+        <Group align="start">
           <TextInput
             variant="filled"
             placeholder="Hiragana, Katakana, ..."
             style={{ flexGrow: 1 }}
             {...form.getInputProps("name")}
           />
-          <Button type="submit">Add Type</Button>
+          <Button type="submit" disabled={!form.isValid()}>
+            Add Type
+          </Button>
         </Group>
       </Card>
     </form>

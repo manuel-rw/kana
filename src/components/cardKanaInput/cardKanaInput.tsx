@@ -1,34 +1,16 @@
 import { Card, TextInput, Text, Button, Stack } from "@mantine/core";
-import { useForm } from "@mantine/form";
+import { useState } from "react";
 
 interface CardKanaInputProps {
   kana: string;
-  translation: string;
+  onSubmit: (value: string) => void;
 }
 
-//TODO: API CALL FOR CHECK VALID INPUT
-//TODO: REMOVE form for VALIDATE
-
-export const CardKanaInput = ({ kana, translation }: CardKanaInputProps) => {
-  const form = useForm({
-    initialValues: {
-      inputValue: "",
-    },
-
-    validate: {
-      inputValue: (value) => value !== translation,
-    },
-  });
-
-  const handleSubmit = (values: any) => {
-    console.log(values);
-  }
+export const CardKanaInput = ({ kana, onSubmit }: CardKanaInputProps) => {
+  const [input, setInput] = useState<string>();
 
   return (
     <Card w="30%" padding="lg" radius="md">
-      <form
-        onSubmit={form.onSubmit(handleSubmit)}
-      >
         <Stack align="center">
           <Text size={128}>{kana}</Text>
 
@@ -36,10 +18,19 @@ export const CardKanaInput = ({ kana, translation }: CardKanaInputProps) => {
             size="xl"
             w="90%"
             placeholder="Translation"
-            {...form.getInputProps("inputValue")}
+            onChange={(value) => {
+              setInput(value.target.value);
+            }}
+            value={input}
           />
 
           <Button
+            onClick={() => {
+              if (!input) {
+                return;
+              }
+              onSubmit(input);
+            }}
             type="submit"
             size="lg"
             w="90%"
@@ -52,7 +43,6 @@ export const CardKanaInput = ({ kana, translation }: CardKanaInputProps) => {
             Validate
           </Button>
         </Stack>
-      </form>
     </Card>
   );
 };
