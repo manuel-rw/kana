@@ -49,12 +49,6 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
                 <UnstyledButton component={Link} href="/learn">
                   <Text className={classes.navItem}>Learn</Text>
                 </UnstyledButton>
-
-                <UnstyledButton component={Link} href="/cli">
-                  <Text className={classes.navItem}>
-                    Command Line Interface
-                  </Text>
-                </UnstyledButton>
               </Group>
 
               <Group>
