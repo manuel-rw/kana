@@ -215,18 +215,25 @@ const KanaGroupTypesTables = () => {
 };
 
 const AddNewKanaGroupTypeForm = () => {
+  const context = api.useContext();
   const form = useForm({
     initialValues: {
       name: "",
     },
   });
-  const { mutate } = api.kana.upsertKanaGroupType.useMutation();
+  const { mutate } = api.kana.upsertKanaGroupType.useMutation({
+    onSuccess: () => {
+      void context.kana.getAll.invalidate();
+    }
+  });
 
   const handleSubmit = () => {
     mutate({
       id: "",
       name: form.values.name,
     });
+
+    form.reset();
   };
   return (
     <form onSubmit={form.onSubmit(handleSubmit)}>
