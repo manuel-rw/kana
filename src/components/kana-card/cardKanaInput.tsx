@@ -1,4 +1,4 @@
-import { TextInput, Text, Button, Stack } from "@mantine/core";
+import { TextInput, Text, Button, Stack, Flex, Container, Center } from "@mantine/core";
 import { getHotkeyHandler } from "@mantine/hooks";
 import { useEffect, useRef, useState } from "react";
 import { CommonKanaCard } from "./common";
@@ -38,8 +38,10 @@ export const CardKanaInput = ({
 
   return (
     <CommonKanaCard>
-      <Stack align="center">
-        <Text size={128}>{kana}</Text>
+      <Flex align="center" direction="column" gap="md" h="100%">
+        <Center style={{ flexGrow: 1 }}>
+          <Text size={128}>{kana}</Text>
+        </Center>
 
         <TextInput
           onKeyDown={getHotkeyHandler([["Enter", handleSubmit]])}
@@ -64,7 +66,7 @@ export const CardKanaInput = ({
         >
           Submit
         </Button>
-      </Stack>
+      </Flex>
     </CommonKanaCard>
   );
 };
