@@ -1,9 +1,21 @@
-import { ActionIcon, Center, Flex, Group, Loader, MantineTheme, Progress, Stack, Text, useMantineTheme } from "@mantine/core";
+import {
+  ActionIcon,
+  Center,
+  DefaultMantineColor,
+  Flex,
+  Group,
+  Loader,
+  MantineTheme,
+  Progress,
+  Stack,
+  Text,
+  useMantineTheme,
+} from "@mantine/core";
 import { IconArrowLeft } from "@tabler/icons-react";
 import { type NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { ReactNode, useEffect, useState } from "react";
+import { type ReactNode, useEffect, useState } from "react";
 import { z } from "zod";
 import { CardKanaInput } from "~/components/kana-card/cardKanaInput";
 import { CommonKanaCard } from "~/components/kana-card/common";
@@ -41,7 +53,7 @@ const PracticeKanaPage: NextPage = () => {
       proposal: "",
       isInitialRequest: true,
     });
-  }, []);
+  }, [result.success]);
 
   useEffect(() => {
     if (!data) {
@@ -121,33 +133,55 @@ const CommonElements = ({
           <IconArrowLeft />
         </ActionIcon>
         <Stack spacing={0}>
-          <Text weight="bold" mb={-5}>Practicing Kana</Text>
-          <Text color="dimmed" size="xs">{Math.round(progressValue)}% accuracy, {total} answers</Text>
+          <Text weight="bold" mb={-5}>
+            Practicing Kana
+          </Text>
+          <Text color="dimmed" size="xs">
+            {Math.round(progressValue)}% accuracy, {total} answers
+          </Text>
         </Stack>
       </Group>
 
-      <Progress value={progressValue} color={progressColor} />
+      <Stack spacing={5}>
+        <Progress value={progressValue} color={progressColor.color} />
+        <Text color={progressColor.color} align="center" size="sm">{progressColor.text}</Text>
+      </Stack>
 
       <Center h="100%">{children}</Center>
     </Flex>
   );
 };
 
-const getProgressBarColor = (progress: number, theme: MantineTheme) => {
+const getProgressBarColor = (
+  progress: number,
+  theme: MantineTheme
+): { color: DefaultMantineColor; text: string } => {
   if (progress < 30) {
-    return theme.colors.red[5];
+    return {
+      color: theme.colors.red[5],
+      text: "Consider learning a smaller batch of Kana",
+    };
   }
 
-  if (progress < 60)  {
-    return theme.colors.orange[4];
+  if (progress < 60) {
+    return {
+      color: theme.colors.orange[4],
+      text: "C'mon, you can do better!",
+    };
   }
 
   if (progress < 90) {
-    return theme.colors.green[5];
+    return {
+      color: theme.colors.green[5],
+      text: "You're learning. Keep up the work!",
+    };
   }
 
-  return theme.colors.green[8];
-}
+  return {
+    color: theme.colors.green[8],
+    text: "You're doing awesome!",
+  };
+};
 
 type LocalStats = {
   incorrect: number;

@@ -42,30 +42,29 @@ export const CardKanaInput = ({
         <Text size={128}>{kana}</Text>
 
         <TextInput
-          size="xl"
-          w="90%"
-          placeholder="Translation"
+          onKeyDown={getHotkeyHandler([["Enter", handleSubmit]])}
           onChange={(value) => {
             setInput(value.target.value);
           }}
           value={input}
-          onKeyDown={getHotkeyHandler([["Enter", handleSubmit]])}
           ref={ref}
+          placeholder="Translation"
+          variant="filled"
+          w="90%"
         />
 
         <Button
           onClick={handleSubmit}
           loading={isLoading}
-          type="submit"
-          size="lg"
-          w="90%"
           variant="light"
+          type="submit"
           color="blue"
-          fullWidth
-          mt="md"
           radius="md"
+          w="90%"
+          mt="md"
+          fullWidth
         >
-          Validate
+          Submit
         </Button>
       </Stack>
     </CommonKanaCard>
