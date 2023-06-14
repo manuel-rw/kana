@@ -1,9 +1,11 @@
-import { GetServerSideProps, type NextPage } from "next";
+import { Center, Loader } from "@mantine/core";
+import { type NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { z } from "zod";
-import { CardKanaInput } from "~/components/cardKanaInput/cardKanaInput";
+import { CardKanaInput } from "~/components/kana-card/cardKanaInput";
+import { CommonKanaCard } from "~/components/kana-card/common";
 import { MainLayout } from "~/layout/main-layout";
 import Custom404Page from "~/pages/404";
 import { api } from "~/utils/api";
@@ -17,9 +19,7 @@ const PracticeKanaPage: NextPage = () => {
 
   const result = paramSchema.safeParse(query);
 
-  const { mutate, data } = api.kanaSolutions.hello.useMutation();
-
-  const [currentKana, setKana] = useState<{ id: string, original: string }>();
+  const { mutateAsync, mutate, data, isLoading } = api.kanaSolutions.hello.useMutation();
 
   useEffect(() => {
     mutate({
@@ -27,19 +27,28 @@ const PracticeKanaPage: NextPage = () => {
       proposal: "",
       isInitialRequest: true,
     });
-
-    if (!data) {
-      return;
-    }
-
-    setKana({
-      id: data.nextKana.id,
-      original: data.nextKana.original,
-    });
   }, []);
 
   if (!true) {
     return <Custom404Page />;
+  }
+
+  if (!data) {
+    return (
+      <MainLayout>
+        <Head>
+          <title>Kana Quiz (active) • Kana</title>
+        </Head>
+
+        <Center h="100%">
+          <CommonKanaCard>
+            <Center h="100%">
+              <Loader />
+            </Center>
+          </CommonKanaCard>
+        </Center>
+      </MainLayout>
+    );
   }
 
   return (
@@ -48,17 +57,19 @@ const PracticeKanaPage: NextPage = () => {
         <title>Kana Quiz (active) • Kana</title>
       </Head>
 
-      <CardKanaInput
-        kana={data?.nextKana.original}
-        translation="A"
-        onSubmit={(value) => {
-          mutate({
-            proposal: value,
-            isInitialRequest: false,
-            kanaId: data?.nextKana.id
-          });
-        }}
-      />
+      <Center h="100%">
+        <CardKanaInput
+          kana={data.nextKana.original}
+          isLoading={isLoading}
+          onSubmit={async (value) => {
+            await mutateAsync({
+              proposal: value,
+              isInitialRequest: false,
+              kanaId: data.nextKana.id,
+            });
+          }}
+        />
+      </Center>
     </MainLayout>
   );
 };
