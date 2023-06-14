@@ -48,9 +48,9 @@ export const CardKanaInput = ({
           }}
           value={input}
           ref={ref}
-          placeholder="Translation"
+          placeholder="Romanji / ろまんじ"
           variant="filled"
-          w="90%"
+          w="100%"
         />
 
         <Button
@@ -60,8 +60,6 @@ export const CardKanaInput = ({
           type="submit"
           color="blue"
           radius="md"
-          w="90%"
-          mt="md"
           fullWidth
         >
           Submit
