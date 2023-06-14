@@ -16,6 +16,7 @@ import { Notifications } from "@mantine/notifications";
 import { ModalsProvider } from "@mantine/modals";
 import { EditKanaModal } from "~/modals/edit-kana-modal";
 import { EditKanaGroupType } from "~/modals/edit-kana-group-type";
+import { EditKanaGroupModal } from "~/modals/edit-kana-group";
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
@@ -61,6 +62,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
           <ModalsProvider
             modals={{
               editKanaModal: EditKanaModal,
+              editKanaGroupModal: EditKanaGroupModal,
               editKanaGroupType: EditKanaGroupType,
             }}
           >

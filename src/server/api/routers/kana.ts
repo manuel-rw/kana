@@ -61,18 +61,30 @@ export const kanaRouter = createTRPCRouter({
       });
     }),
 
-  createNewGroup: protectedProcedure
-    .input(z.object({ name: z.string(), typeId: z.string() }))
+  upsertKanaGroup: protectedProcedure
+    .input(
+      z.object({
+        id: z.string().default(""),
+        name: z.string(),
+        typeId: z.string(),
+      })
+    )
     .mutation(async ({ ctx, input }) => {
-      return await ctx.prisma.kanaGroup.create({
-        data: {
+      return await ctx.prisma.kanaGroup.upsert({
+        where: {
+          id: input.id,
+        },
+        create: {
           name: input.name,
           typeId: input.typeId,
+        },
+        update: {
+          name: input.name,
         },
       });
     }),
 
-    upsertKanaGroupType: protectedProcedure
+  upsertKanaGroupType: protectedProcedure
     .input(
       z.object({
         name: z.string(),
@@ -85,7 +97,7 @@ export const kanaRouter = createTRPCRouter({
           id: input.id,
         },
         update: {
-          name: input.name
+          name: input.name,
         },
         create: {
           name: input.name,

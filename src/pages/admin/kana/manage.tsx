@@ -9,7 +9,6 @@ import {
   Menu,
   UnstyledButton,
   Group,
-  Grid,
   Space,
   Stack,
 } from "@mantine/core";
@@ -17,12 +16,16 @@ import { useForm } from "@mantine/form";
 import { modals } from "@mantine/modals";
 import { IconDots, IconPencil, IconPlus, IconTrash } from "@tabler/icons-react";
 import { type NextPage } from "next";
+import Head from "next/head";
 import { MainLayout } from "~/layout/main-layout";
 import { api } from "~/utils/api";
 
 const ManageKanaPage: NextPage = () => {
   return (
     <MainLayout>
+      <Head>
+        <title>Manage Kana • Kana</title>
+      </Head>
       <Title mb="lg">Manage Kana</Title>
 
       <KanaGroupTypesTables />
@@ -37,11 +40,6 @@ const ManageKanaPage: NextPage = () => {
 const KanaGroupTypesTables = () => {
   const utils = api.useContext();
   const { data, isLoading } = api.kana.getAll.useQuery();
-  const { mutate } = api.kana.createNewGroup.useMutation({
-    onSuccess: () => {
-      void utils.kana.getAll.invalidate();
-    },
-  });
   const { mutate: mutateKanaDeletion } = api.kana.deleteKanaGroup.useMutation({
     onSuccess: () => {
       void utils.kana.getAll.invalidate();
@@ -91,17 +89,36 @@ const KanaGroupTypesTables = () => {
                 </th>
               </tr>
               <tr>
-                {type.groups.map((type, typeIndex) => (
-                  <th key={typeIndex}>{type.name}</th>
+                {type.groups.map((group, typeIndex) => (
+                  <th key={typeIndex}>
+                    <UnstyledButton onClick={() => {
+                      modals.openContextModal({
+                        modal: 'editKanaGroupModal',
+                        title: 'Edit Kana Group',
+                        innerProps: {
+                          group: group,
+                        }
+                      });
+                    }}>
+                      <Text>{group.name}</Text>
+                    </UnstyledButton>
+                  </th>
                 ))}
                 <th style={{ width: "100%" }}></th>
                 <th>
                   <ActionIcon
                     variant="default"
                     onClick={() => {
-                      mutate({
-                        name: "ABC",
-                        typeId: type.id,
+                      modals.openContextModal({
+                        modal: "editKanaGroupModal",
+                        title: "Add Kana Group",
+                        innerProps: {
+                          group: {
+                            typeId: type.id,
+                            name: "",
+                            id: "",
+                          },
+                        },
                       });
                     }}
                   >
