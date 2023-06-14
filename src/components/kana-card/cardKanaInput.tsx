@@ -1,4 +1,4 @@
-import { TextInput, Text, Button, Stack, Flex, Container, Center } from "@mantine/core";
+import { TextInput, Text, Button, Flex, Center } from "@mantine/core";
 import { getHotkeyHandler } from "@mantine/hooks";
 import { useEffect, useRef, useState } from "react";
 import { CommonKanaCard } from "./common";

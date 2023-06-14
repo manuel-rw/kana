@@ -14,6 +14,7 @@ import {
 import { IconArrowLeft } from "@tabler/icons-react";
 import { type NextPage } from "next";
 import Head from "next/head";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { type ReactNode, useEffect, useState } from "react";
 import { z } from "zod";
@@ -129,7 +130,7 @@ const CommonElements = ({
   return (
     <Flex h="100%" direction="column">
       <Group mb="md">
-        <ActionIcon variant="default">
+        <ActionIcon component={Link} href="/learn/kana/" variant="default">
           <IconArrowLeft />
         </ActionIcon>
         <Stack spacing={0}>
