@@ -13,6 +13,9 @@ import {
 import { useState } from "react";
 import { useColorScheme } from "@mantine/hooks";
 import { Notifications } from "@mantine/notifications";
+import { ModalsProvider } from "@mantine/modals";
+import { EditKanaModal } from "~/modals/edit-kana-modal";
+import { EditKanaGroupType } from "~/modals/edit-kana-group-type";
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
@@ -55,7 +58,14 @@ const MyApp: AppType<{ session: Session | null }> = ({
           withNormalizeCSS
         >
           <Notifications />
-          <Component {...pageProps} />
+          <ModalsProvider
+            modals={{
+              editKanaModal: EditKanaModal,
+              editKanaGroupType: EditKanaGroupType,
+            }}
+          >
+            <Component {...pageProps} />
+          </ModalsProvider>
         </MantineProvider>
       </ColorSchemeProvider>
     </SessionProvider>
