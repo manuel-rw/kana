@@ -67,3 +67,34 @@ model VerificationToken {
 
     @@unique([identifier, token])
 }
+
+model Kana {
+    id          String @id @default(cuid())
+    kana        String
+    romanji     String
+    groupId     String
+    group       KanaGroup @relation(fields: [groupId], references: [id], onDelete: Cascade)
+    userSolutions UserSolution[]
+}
+
+model KanaGroup {
+    id          String @id @default(cuid())
+    name        String
+    typeId      String
+    type        KanaGroupType @relation(fields: [typeId], references: [id], onDelete: Cascade)
+    kanas       Kana[]
+}
+
+model KanaGroupType {
+    id          String @id @default(cuid())
+    name        String
+    groups      KanaGroup[]
+}
+
+model UserSolution {
+    id          String @id @default(cuid())
+    kana        Kana @relation(fields: [kanaId], references: [id], onDelete: Cascade)
+    kanaId      String
+    proposal    String
+    correct     Boolean
+}
