@@ -97,4 +97,5 @@ model UserSolution {
     kanaId      String
     proposal    String
     correct     Boolean
+    date        DateTime
 }

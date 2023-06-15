@@ -29,6 +29,7 @@
     "@trpc/server": "^10.18.0",
     "bcrypt": "^5.1.0",
     "dayjs": "^1.11.7",
+    "moment": "^2.29.4",
     "next": "^13.4.1",
     "next-auth": "^4.21.0",
     "next-logger": "^3.0.2",

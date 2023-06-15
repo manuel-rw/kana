@@ -1,11 +1,11 @@
 import {
   ActionIcon,
   Center,
-  DefaultMantineColor,
+  type DefaultMantineColor,
   Flex,
   Group,
   Loader,
-  MantineTheme,
+  type MantineTheme,
   Progress,
   Stack,
   Text,
@@ -107,6 +107,8 @@ const PracticeKanaPage: NextPage = () => {
               kanaId: data.nextKana.id,
             });
           }}
+          stepsUntilSolution={data.solution.triesUntilSolution}
+          solution={data.solution.kana}
         />
       </CommonElements>
     </MainLayout>
