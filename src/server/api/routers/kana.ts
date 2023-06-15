@@ -43,7 +43,7 @@ export const kanaRouter = createTRPCRouter({
     .input(
       z.object({
         name: z.string(),
-        romanji: z.string(),
+        roumaji: z.string(),
         groupId: z.string(),
         kanaId: z.string().optional(),
       })
@@ -55,11 +55,11 @@ export const kanaRouter = createTRPCRouter({
         },
         update: {
           kana: input.name,
-          romanji: input.romanji,
+          roumaji: input.roumaji,
         },
         create: {
           kana: input.name,
-          romanji: input.romanji,
+          roumaji: input.roumaji,
           groupId: input.groupId,
         },
       });

@@ -1,4 +1,5 @@
 import { TRPCError } from "@trpc/server";
+
 import { z } from "zod";
 
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
@@ -56,7 +57,7 @@ export const kanaSolutionsRouter = createTRPCRouter({
         });
       }
 
-      if (kana.romanji === input.proposal) {
+      if (kana.roumaji === input.proposal) {
         const productsCount = await ctx.prisma.kana.count();
         const skip = Math.floor(Math.random() * productsCount);
         const nextKana = await ctx.prisma.kana.findFirst({

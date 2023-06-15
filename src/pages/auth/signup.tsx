@@ -29,8 +29,8 @@ const Register: NextPage = () => {
 
   const form = useForm({
     initialValues: {
-      username: undefined,
-      password: undefined,
+      username: '',
+      password: '',
       acceptTos: false,
     },
     validateInputOnChange: true,

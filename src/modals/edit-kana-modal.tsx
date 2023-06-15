@@ -17,12 +17,12 @@ export const EditKanaModal = ({
   const form = useForm({
     initialValues: {
       original: innerProps.kana.kana,
-      romanji: innerProps.kana.romanji,
+      roumaji: innerProps.kana.roumaji,
     },
     validate: zodResolver(
       z.object({
         original: z.string().min(1).max(5),
-        romanji: z.string().min(1).max(5),
+        roumaji: z.string().min(1).max(5),
       })
     ),
     validateInputOnBlur: true,
@@ -32,7 +32,7 @@ export const EditKanaModal = ({
   const handleSubmit = () => {
     mutateAsync({
       name: form.values.original,
-      romanji: form.values.romanji,
+      roumaji: form.values.roumaji,
       kanaId: innerProps.kana.id,
       groupId: innerProps.kana.groupId,
     })

@@ -71,7 +71,7 @@ model VerificationToken {
 model Kana {
     id          String @id @default(cuid())
     kana        String
-    romanji     String
+    roumaji     String
     groupId     String
     group       KanaGroup @relation(fields: [groupId], references: [id], onDelete: Cascade)
     userSolutions UserSolution[]

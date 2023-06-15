@@ -44,6 +44,14 @@ After initial procedure has been done, you only need to execute ``yarn dev`` if 
 - Copy the above "Client ID" and paste it into the ``DISCORD_CLIENT_ID`` variable in the ``.env``
 - Reset and copy the Client Secret (Warning: The secret wll only be visible once. Store it securely!) and pase it into the ``DISCORD_CLIENT_SECRET`` variable in the ``.env``.
 
+## Database management
+### Seeding default Kana data
+To bootstrap the database with the default seed data, you can use the following command: ``yarn prisma db seed``.
+
+### Pushing migrations
+When the database schema has changed, you can use ``yarn prisma db push`` to apply all changes.
+If the operation cannot be applied, without deleting or generating data forcefully, it will ask you for permissions to delete all existing tables and re-create.
+
 ## Safety
 - All passwords are hashed by default. A password will be hashed using a randomly generated salt per user. Therefore, the same password on seperate user accounts will not be the same hash in the database, since the salt is different for both users.
 - Next.js does not support SSL / TLS out of the box. A man in the middle attack is feasable and may compromise user data. It makes sense to remove the HTTP for outgoing communications and expose the application over HTTPS using a reverse proxy. This also ensures frequent renewal of certificates (e.g. using Nginx Proxy Manager with Cerbot).
