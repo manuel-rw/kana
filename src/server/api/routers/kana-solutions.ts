@@ -1,3 +1,4 @@
+import { type PrismaClient } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
 
 import moment from "moment";
@@ -13,6 +14,7 @@ export const kanaSolutionsRouter = createTRPCRouter({
         kanaId: z.string(),
         proposal: z.string(),
         isInitialRequest: z.boolean(),
+        desiredKanaGroups: z.array(z.string())
       })
     )
     .output(
@@ -24,28 +26,7 @@ export const kanaSolutionsRouter = createTRPCRouter({
     )
     .mutation(async ({ input, ctx }) => {
       if (input.isInitialRequest) {
-        const productsCount = await ctx.prisma.kana.count();
-        const skip = Math.floor(Math.random() * productsCount);
-        const nextKana = await ctx.prisma.kana.findFirst({
-          skip: skip,
-          take: 1,
-        });
-
-        if (!nextKana) {
-          throw new TRPCError({
-            code: "INTERNAL_SERVER_ERROR",
-            message: "Failed to retrieve next kana",
-          });
-        }
-
-        return {
-          proposalIsCorrect: true,
-          nextKana: {
-            id: nextKana.id,
-            original: nextKana.kana,
-          },
-          solution: {}
-        };
+        return await constructKanaAfterCorrectProposal(ctx.prisma);
       }
 
       const kana = await ctx.prisma.kana.findUnique({
@@ -73,28 +54,7 @@ export const kanaSolutionsRouter = createTRPCRouter({
       });
 
       if (proposalMatchesKana) {
-        const productsCount = await ctx.prisma.kana.count();
-        const skip = Math.floor(Math.random() * productsCount);
-        const nextKana = await ctx.prisma.kana.findFirst({
-          skip: skip,
-          take: 1,
-        });
-
-        if (!nextKana) {
-          throw new TRPCError({
-            code: "INTERNAL_SERVER_ERROR",
-            message: "Failed to retrieve next kana",
-          });
-        }
-
-        return {
-          proposalIsCorrect: true,
-          nextKana: {
-            id: nextKana.id,
-            original: nextKana.kana,
-          },
-          solution: {}
-        };
+        return await constructKanaAfterCorrectProposal(ctx.prisma);
       } else {
         const beforeDate = moment(new Date()).subtract(5, "minutes").toDate();
         const recentSolutions = await ctx.prisma.userSolution.count({
@@ -125,3 +85,31 @@ export const kanaSolutionsRouter = createTRPCRouter({
       }
     }),
 });
+
+const constructKanaAfterCorrectProposal = async(client: PrismaClient) => {
+  const randomKana = await findRandomKana(client);
+  if (!randomKana) {
+    throw new TRPCError({
+      code: "INTERNAL_SERVER_ERROR",
+      message: "Failed to retrieve next kana",
+    });
+  }
+
+  return {
+    proposalIsCorrect: true,
+    nextKana: {
+      id: randomKana.id,
+      original: randomKana.kana,
+    },
+    solution: {}
+  };
+}
+
+const findRandomKana = async (client: PrismaClient) => {
+  const productsCount = await client.kana.count();
+  const skip = Math.floor(Math.random() * productsCount);
+  return await client.kana.findFirst({
+    skip: skip,
+    take: 1,
+  });
+}

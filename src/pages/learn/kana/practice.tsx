@@ -53,6 +53,7 @@ const PracticeKanaPage: NextPage = () => {
       kanaId: "",
       proposal: "",
       isInitialRequest: true,
+      desiredKanaGroups: result.data.kanaTypes,
     });
   }, [result.success]);
 
@@ -105,6 +106,7 @@ const PracticeKanaPage: NextPage = () => {
               proposal: value,
               isInitialRequest: false,
               kanaId: data.nextKana.id,
+              desiredKanaGroups: result.data.kanaTypes,
             });
           }}
           stepsUntilSolution={data.solution.triesUntilSolution}
