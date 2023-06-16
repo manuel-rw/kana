@@ -14,19 +14,25 @@ export const kanaSolutionsRouter = createTRPCRouter({
         kanaId: z.string(),
         proposal: z.string(),
         isInitialRequest: z.boolean(),
-        desiredKanaGroups: z.array(z.string())
+        desiredKanaGroups: z.array(z.string()),
       })
     )
     .output(
       z.object({
         proposalIsCorrect: z.boolean(),
         nextKana: z.object({ original: z.string(), id: z.string() }),
-        solution: z.object({ kana: z.string().optional(), triesUntilSolution: z.number().default(-1) }),
+        solution: z.object({
+          kana: z.string().optional(),
+          triesUntilSolution: z.number().default(-1),
+        }),
       })
     )
     .mutation(async ({ input, ctx }) => {
       if (input.isInitialRequest) {
-        return await constructKanaAfterCorrectProposal(ctx.prisma);
+        return await constructKanaAfterCorrectProposal(
+          ctx.prisma,
+          input.desiredKanaGroups
+        );
       }
 
       const kana = await ctx.prisma.kana.findUnique({
@@ -50,11 +56,14 @@ export const kanaSolutionsRouter = createTRPCRouter({
           proposal: input.proposal,
           kanaId: kana.id,
           date: new Date(),
-        }
+        },
       });
 
       if (proposalMatchesKana) {
-        return await constructKanaAfterCorrectProposal(ctx.prisma);
+        return await constructKanaAfterCorrectProposal(
+          ctx.prisma,
+          input.desiredKanaGroups
+        );
       } else {
         const beforeDate = moment(new Date()).subtract(5, "minutes").toDate();
         const recentSolutions = await ctx.prisma.userSolution.count({
@@ -62,9 +71,9 @@ export const kanaSolutionsRouter = createTRPCRouter({
             kanaId: kana.id,
             correct: false,
             date: {
-              gt: beforeDate
-            }
-          }
+              gt: beforeDate,
+            },
+          },
         });
 
         const remainingTriesBeforeSolution = Math.max(3 - recentSolutions, 0);
@@ -80,14 +89,17 @@ export const kanaSolutionsRouter = createTRPCRouter({
           solution: {
             triesUntilSolution: remainingTriesBeforeSolution,
             kana: showSolution ? kana.roumaji : undefined,
-          }
+          },
         };
       }
     }),
 });
 
-const constructKanaAfterCorrectProposal = async(client: PrismaClient) => {
-  const randomKana = await findRandomKana(client);
+const constructKanaAfterCorrectProposal = async (
+  client: PrismaClient,
+  desiredKanaGroups: string[]
+) => {
+  const randomKana = await findRandomKana(client, desiredKanaGroups);
   if (!randomKana) {
     throw new TRPCError({
       code: "INTERNAL_SERVER_ERROR",
@@ -101,15 +113,29 @@ const constructKanaAfterCorrectProposal = async(client: PrismaClient) => {
       id: randomKana.id,
       original: randomKana.kana,
     },
-    solution: {}
+    solution: {},
   };
-}
+};
 
-const findRandomKana = async (client: PrismaClient) => {
-  const productsCount = await client.kana.count();
+const findRandomKana = async (
+  client: PrismaClient,
+  desiredKanaGroups: string[]
+) => {
+  const productsCount = await client.kana.count({
+    where: {
+      groupId: {
+        in: desiredKanaGroups,
+      },
+    },
+  });
   const skip = Math.floor(Math.random() * productsCount);
   return await client.kana.findFirst({
+    where: {
+      groupId: {
+        in: desiredKanaGroups,
+      },
+    },
     skip: skip,
     take: 1,
   });
-}
+};
