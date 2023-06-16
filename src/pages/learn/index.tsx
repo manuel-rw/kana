@@ -47,7 +47,7 @@ const PracticePage: NextPage = () => {
         <title>Learn • Profile</title>
       </Head>
 
-      <Title mb="lg">What's up on your mind today?</Title>
+      <Title mb="lg">What&apos;s up on your mind today?</Title>
 
       <Grid justify="stretch">
         {cards.map((card, index) => (

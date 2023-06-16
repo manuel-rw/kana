@@ -9,7 +9,7 @@ import {
   Box,
 } from "@mantine/core";
 import { type NextPage } from "next";
-import { getSession, useSession } from "next-auth/react";
+import { GetSessionParams, getSession, useSession } from "next-auth/react";
 import Head from "next/head";
 import { MainLayout } from "~/layout/main-layout";
 
@@ -67,7 +67,7 @@ const ProfilePage: NextPage = () => {
 };
 
 export async function getServerSideProps(context: any) {
-  const session = await getSession(context);
+  const session = await getSession(context as GetSessionParams);
 
   if (!session) {
     return {

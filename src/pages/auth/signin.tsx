@@ -44,7 +44,7 @@ export default function SignIn({
           Sign in
         </Title>
         <Text align="center" size="sm" mb="md">
-          We'll never ask for your credentials via Email. Keep your login data
+          We&apos;ll never ask for your credentials via Email. Keep your login data
           stored securely.
         </Text>
         <Stack mb="md">
@@ -61,8 +61,8 @@ export default function SignIn({
                 <div key={provider.name}>
                   <Button
                     leftIcon={ButtonIcon}
-                    onClick={() => {
-                      signIn(provider.id);
+                    onClick={async () => {
+                      await signIn(provider.id);
                     }}
                     w="100%"
                   >
@@ -84,7 +84,7 @@ export default function SignIn({
           w="100%"
           mt="md"
         >
-          Don't have an account yet?
+          Don&apos;t have an account yet?
         </Button>
       </FormWrapper>
     </MainLayout>
@@ -96,7 +96,7 @@ const ErrorDisplay = ({ error }: { error: string }) => {
     case "CredentialsSignin":
       return (
         <Alert icon={<IconAlertTriangle size="1rem" />} color="red">
-          Your credentials are incorrect or this account doesn't exist. Please
+          Your credentials are incorrect or this account doesn&apos;t exist. Please
           try again
         </Alert>
       );
