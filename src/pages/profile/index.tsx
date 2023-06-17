@@ -11,12 +11,13 @@ import {
 import { type NextPage } from "next";
 import { type GetSessionParams, getSession, useSession } from "next-auth/react";
 import Head from "next/head";
+import { UserCardImage } from "~/components/profile/profile-card";
 import { MainLayout } from "~/layout/main-layout";
 
 const ProfilePage: NextPage = () => {
   const { data } = useSession();
 
-  if (!data) {
+  if (!data || !data.user || !data.user.name) {
     return null;
   }
 
@@ -25,43 +26,9 @@ const ProfilePage: NextPage = () => {
       <Head>
         <title>{data.user.name} • Profile</title>
       </Head>
-      <Box maw={600} mx="auto">
-        <Card mb="md">
-          <Card.Section h={200} pos="relative">
-            <Image
-              src={data.user.image}
-              w="100%"
-              h="100%"
-              fit="cover"
-              alt=""
-              style={{ filter: 'blur(6px)' }}
-            />
+      <UserCardImage avatar={data.user.image} image={data.user.image} name={data.user.name} />
 
-            <Overlay
-              sx={(theme) => ({
-                backgroundImage: theme.fn.gradient({
-                  from: "transparent",
-                  to: `${theme.colors.dark[9]}60`,
-                  deg: 180,
-                }),
-                backgroundColor: "transparent",
-              })}
-              p="md"
-            >
-              <Stack justify="end" h="100%">
-                <Avatar src={data.user.image} />
-                <Stack spacing={0}>
-                  <Text color="white" size="lg" weight="bold">
-                    {data.user.name}
-                  </Text>
-                  <Text color="white">Level 1</Text>
-                </Stack>
-              </Stack>
-            </Overlay>
-          </Card.Section>
-        </Card>
-        <Title order={2}>Achievements</Title>
-      </Box>
+
     </MainLayout>
   );
 };
