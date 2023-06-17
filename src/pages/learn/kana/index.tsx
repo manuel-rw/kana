@@ -1,9 +1,21 @@
-import { Button, Card, Checkbox, Loader, Stack, Title } from "@mantine/core";
+import {
+  Anchor,
+  Breadcrumbs,
+  Button,
+  Card,
+  Checkbox,
+  Loader,
+  Space,
+  Stack,
+  Text,
+  Title,
+} from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { type Kana, type KanaGroup, type KanaGroupType } from "@prisma/client";
 import { type NextPage } from "next";
-import { type GetSessionParams, getSession } from "next-auth/react";
+import { getSession, type GetSessionParams } from "next-auth/react";
 import Head from "next/head";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { MainLayout } from "~/layout/main-layout";
 import { api } from "~/utils/api";
@@ -24,7 +36,21 @@ const KanaPage: NextPage = () => {
       <Head>
         <title>Kana Quiz • Kana</title>
       </Head>
-      <Title>Practice Hiragana</Title>
+
+      <Space h="xl" />
+
+      <Breadcrumbs mb="md">
+        <Anchor component={Link} href="/">Home</Anchor>
+        <Anchor component={Link} href="/learn">Practice</Anchor>
+        <Text color="dimmed">Select Kana</Text>
+      </Breadcrumbs>
+
+      <Title mb="xs">Practice Hiragana</Title>
+      <Text mb="md">
+        Choose, which Hiragana or Katakana you would like to learn. After
+        you&apos;ve selected the desired characters, press the button below to
+        start learning.
+      </Text>
 
       <Card>
         <KanaSelectionForm data={data} />

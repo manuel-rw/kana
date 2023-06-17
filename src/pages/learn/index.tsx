@@ -1,100 +1,77 @@
 import {
-  Button,
-  Card,
-  Flex,
-  Grid,
-  Image,
-  Indicator,
+  Anchor,
+  Breadcrumbs,
+  SimpleGrid,
+  Space,
   Text,
   Title,
+  UnstyledButton,
+  createStyles,
+  rem,
 } from "@mantine/core";
+import { IconLanguageHiragana } from "@tabler/icons-react";
 import { type NextPage } from "next";
-import { type GetSessionParams, getSession } from "next-auth/react";
+import { getSession, type GetSessionParams } from "next-auth/react";
 import Head from "next/head";
 import Link from "next/link";
-import { type ReactNode } from "react";
 import { MainLayout } from "~/layout/main-layout";
 
-interface PracticeCard {
-  imageSrc?: string;
-  title: string;
-  description: string;
-  isRecommended: boolean;
-  footer: ReactNode;
-}
-
-const cards: PracticeCard[] = [
+const data = [
   {
-    title: "Practice reading Kana",
-    description:
-      "In this course, you'll practice reading Hiragana and Katakana, the most basic writing in Japanese. Being able to read Hiragana and Katakana will enable you, to read and write basic sentences in Japanese.",
-    footer: (
-      <Button component={Link} href="/learn/kana/" fullWidth>
-        Start practice
-      </Button>
-    ),
-    isRecommended: true,
-    imageSrc:
-      "https://files.tofugu.com/articles/japanese/2014-06-30-learn-hiragana/header-2560x.jpg",
-  },
-  {
-    title: "Basic Sentences",
-    description:
-      "Practice your basic communication skills while translating common sentences, answering to questions and communicating with friends",
-    footer: (
-      <Button fullWidth disabled>
-        Coming soon
-      </Button>
-    ),
-    isRecommended: false,
+    title: "Hiragana & Katakana",
+    icon: IconLanguageHiragana,
+    color: "violet",
+    href: "/learn/kana",
   },
 ];
 
 const PracticePage: NextPage = () => {
+  const { classes, theme } = useStyles();
+
+  const items = data.map((item) => {
+    const color = theme.colors[item.color];
+
+    if (!color) {
+      return;
+    }
+
+    return (
+      <UnstyledButton
+        key={item.title}
+        component={Link}
+        href={item.href}
+        className={classes.item}
+      >
+        <item.icon color={color[6]} size="2rem" />
+        <Text size="xs" mt={7}>
+          {item.title}
+        </Text>
+      </UnstyledButton>
+    );
+  });
   return (
     <MainLayout>
       <Head>
         <title>Learn • Profile</title>
       </Head>
 
-      <Title mb="lg">What&apos;s up on your mind today?</Title>
+      <Space h="xl" />
 
-      <Grid justify="stretch">
-        {cards.map((card, index) => (
-          <Grid.Col xs={12} sm={6} md={4} key={index}>
-            <Indicator
-              styles={{
-                common: { height: "auto", marginRight: 35 },
-                root: { height: "100%" },
-              }}
-              label="Recommended"
-              position="top-end"
-              disabled={!card.isRecommended}
-            >
-              <Card
-                shadow="md"
-                h="inherit"
-                withBorder
-                display="flex"
-                style={{ flexDirection: "column" }}
-              >
-                {card.imageSrc && (
-                  <Card.Section mb="md">
-                    <Image src={card.imageSrc} w="100%" h="100%" alt="" />
-                  </Card.Section>
-                )}
-                <Flex direction="column" h="inherit">
-                  <Title order={5}>{card.title}</Title>
-                  <Text mb="md" style={{ flexGrow: 1 }}>
-                    {card.description}
-                  </Text>
-                  {card.footer}
-                </Flex>
-              </Card>
-            </Indicator>
-          </Grid.Col>
-        ))}
-      </Grid>
+      <Breadcrumbs mb="md">
+        <Anchor component={Link} href="/">
+          Home
+        </Anchor>
+        <Anchor component={Link} href="/learn">
+          Practice
+        </Anchor>
+        <Text color="dimmed">Select Kana</Text>
+      </Breadcrumbs>
+
+      <Title mb="lg">What do you want to practice?</Title>
+
+      <SimpleGrid cols={3} mt="md">
+        {items}
+      </SimpleGrid>
     </MainLayout>
   );
 };
@@ -115,5 +92,36 @@ export async function getServerSideProps(context: GetSessionParams) {
     props: { session },
   };
 }
+
+const useStyles = createStyles((theme) => ({
+  card: {
+    backgroundColor:
+      theme.colorScheme === "dark"
+        ? theme.colors.dark[6]
+        : theme.colors.gray[0],
+  },
+
+  title: {
+    fontWeight: 700,
+  },
+
+  item: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    textAlign: "center",
+    borderRadius: theme.radius.md,
+    height: rem(90),
+    backgroundColor:
+      theme.colorScheme === "dark" ? theme.colors.dark[7] : theme.white,
+    transition: "box-shadow 150ms ease, transform 100ms ease",
+
+    "&:hover": {
+      boxShadow: theme.shadows.md,
+      transform: "scale(1.05)",
+    },
+  },
+}));
 
 export default PracticePage;
