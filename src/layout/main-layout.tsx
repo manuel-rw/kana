@@ -34,8 +34,8 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
       </Head>
       <AppShell
         header={
-          <Header height={50} className={classes.main}>
-            <Group position="apart" h="100%" pl="md" pr="xs">
+          <Header height={55} className={classes.main}>
+            <Group position="apart" h="100%" pl="lg" pr="md">
               <Group spacing="xl">
                 <UnstyledButton component={Link} href="/" mr="xl">
                   <Group h="100%" align="center" spacing="xs">

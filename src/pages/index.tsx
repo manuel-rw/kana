@@ -38,7 +38,15 @@ export default Home;
 
 const HeroBanner: React.FC = () => {
   return (
-    <Stack spacing={0} mt={100}>
+    <Stack
+      sx={(theme) => ({
+        [theme.fn.largerThan("md")]: {
+          marginTop: 100,
+        },
+        marginTop: 20,
+      })}
+      spacing={0}
+    >
       <Text color="grape" weight="bold" size="xl">
         Easy and fast
       </Text>
@@ -52,7 +60,18 @@ const HeroBanner: React.FC = () => {
       </Text>
 
       <Group mt="lg">
-        <Button rightIcon={<IconArrowRight size="1rem" />} variant="light">
+        <Button
+          sx={(theme) => ({
+            transition: ".3s border ease-in-out",
+            "&:hover": {
+              backgroundColor:
+                theme.colorScheme === "light" ? "white" : undefined,
+              borderColor: theme.colors.grape[6],
+            },
+          })}
+          rightIcon={<IconArrowRight size="1rem" />}
+          variant="light"
+        >
           Start learning
         </Button>
         <Button rightIcon={<IconArrowRight size="1rem" />} variant="flat">
