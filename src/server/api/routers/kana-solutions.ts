@@ -20,7 +20,11 @@ export const kanaSolutionsRouter = createTRPCRouter({
     .output(
       z.object({
         proposalIsCorrect: z.boolean(),
-        nextKana: z.object({ original: z.string(), id: z.string() }),
+        nextKana: z.object({
+          original: z.string(),
+          id: z.string(),
+          expectedLength: z.number(),
+        }),
         solution: z.object({
           kana: z.string().optional(),
           triesUntilSolution: z.number().default(-1),
@@ -85,6 +89,7 @@ export const kanaSolutionsRouter = createTRPCRouter({
           nextKana: {
             id: kana.id,
             original: kana.kana,
+            expectedLength: kana.roumaji.length,
           },
           solution: {
             triesUntilSolution: remainingTriesBeforeSolution,
@@ -112,6 +117,7 @@ const constructKanaAfterCorrectProposal = async (
     nextKana: {
       id: randomKana.id,
       original: randomKana.kana,
+      expectedLength: randomKana.roumaji.length,
     },
     solution: {},
   };

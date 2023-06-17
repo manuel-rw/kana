@@ -15,6 +15,7 @@ interface CardKanaInputProps {
   isLoading: boolean;
   stepsUntilSolution: number;
   solution?: string;
+  expectedLength: number;
   onSubmit: (value: string) => Promise<void>;
 }
 
@@ -24,6 +25,7 @@ export const CardKanaInput = ({
   solution,
   onSubmit,
   isLoading,
+  expectedLength
 }: CardKanaInputProps) => {
   const ref = useRef<HTMLInputElement>(null);
   const [input, setInput] = useState<string>("");
@@ -46,6 +48,14 @@ export const CardKanaInput = ({
 
     ref.current.focus();
   }, []);
+
+  useEffect(() => {
+    if (input.length !== expectedLength) {
+      return;
+    }
+
+    handleSubmit();
+  }, [input]);
 
   return (
     <CommonKanaCard>

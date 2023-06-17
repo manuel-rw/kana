@@ -112,6 +112,7 @@ const PracticeKanaPage: NextPage = () => {
           }}
           stepsUntilSolution={data.solution.triesUntilSolution}
           solution={data.solution.kana}
+          expectedLength={data.nextKana.expectedLength}
         />
       </CommonElements>
     </MainLayout>
