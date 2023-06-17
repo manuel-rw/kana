@@ -1,15 +1,11 @@
 import { type NextPage } from "next";
 import Head from "next/head";
-import Link from "next/link";
-import { signIn, signOut, useSession } from "next-auth/react";
 
-import { api } from "~/utils/api";
+import { Button, Group, Space, Stack, Text, Title } from "@mantine/core";
+import { IconArrowRight } from "@tabler/icons-react";
 import { MainLayout } from "~/layout/main-layout";
-import { Button, Group, Title } from "@mantine/core";
 
 const Home: NextPage = () => {
-  const hello = api.example.hello.useQuery({ text: "from tRPC" });
-
   return (
     <>
       <Head>
@@ -17,13 +13,22 @@ const Home: NextPage = () => {
       </Head>
 
       <MainLayout>
-        <Title>Kana App Modul 183</Title>
-        <div className="flex flex-col items-center gap-2">
-          <p className="text-2xl text-white">
-            {hello.data ? hello.data.greeting : "Loading tRPC query..."}
-          </p>
-          <AuthShowcase />
-        </div>
+        <HeroBanner />
+
+        <Space h={100} />
+
+        <Stack align="right" maw={500} ml="auto">
+          <Title align="right">
+            こんにちは!
+            <br />
+            にほんごをべんきょしましょう
+          </Title>
+          <Text align="right">
+            Although this website is only a small part, what you need to learn
+            and use, it will help you understand exercises and is a great
+            preparation for Japanese courses for beginners.
+          </Text>
+        </Stack>
       </MainLayout>
     </>
   );
@@ -31,30 +36,29 @@ const Home: NextPage = () => {
 
 export default Home;
 
-const AuthShowcase: React.FC = () => {
-  const { data: sessionData } = useSession();
-
-  const { data: secretMessage } = api.example.getSecretMessage.useQuery(
-    undefined, // no input
-    { enabled: sessionData?.user !== undefined }
-  );
-
+const HeroBanner: React.FC = () => {
   return (
-    <div className="flex flex-col items-center justify-center gap-4">
-      <p className="text-center text-2xl text-white">
-        {sessionData && <span>Logged in as {sessionData.user?.name}</span>}
-        {secretMessage && <span> - {secretMessage}</span>}
-      </p>
-      <Group spacing="md">
-        <Button component={Link} href="/auth/signup">
-          Register
+    <Stack spacing={0} mt={100}>
+      <Text color="grape" weight="bold" size="xl">
+        Easy and fast
+      </Text>
+      <Title order={1} size="4rem" weight="bolder" mb="lg">
+        Learn Hiragana and Katakana
+      </Title>
+      <Text size="lg">
+        Want to read Japanese? Hiragana and Katakana are essential to understand
+        the language. Practice only a few minutes each day and you&apos;ll be
+        able to read most texts.
+      </Text>
+
+      <Group mt="lg">
+        <Button rightIcon={<IconArrowRight size="1rem" />} variant="light">
+          Start learning
         </Button>
-        <Button
-          onClick={sessionData ? () => void signOut() : () => void signIn()}
-        >
-          {sessionData ? "Sign out" : "Sign in"}
+        <Button rightIcon={<IconArrowRight size="1rem" />} variant="flat">
+          Sign up
         </Button>
       </Group>
-    </div>
+    </Stack>
   );
 };

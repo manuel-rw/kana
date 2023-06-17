@@ -12,11 +12,13 @@ export const DarkModeToggle = () => {
             onClick={() => toggleColorScheme()}
             size="xl"
             sx={(theme) => ({
-                backgroundColor:
-                    theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[0],
+                backgroundColor: "#0000001c",
+                '&:hover': {
+                    backgroundColor: "#00000038",
+                },
                 color: theme.colorScheme === 'dark' ? theme.colors.yellow[4] : theme.colors.blue[6],
             })}
-            bg='transparent'
+            radius="xl"
             className={classes.main}
         >
             {colorScheme === 'dark' ? (

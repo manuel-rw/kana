@@ -2,6 +2,7 @@ import {
   AppShell,
   Avatar,
   Button,
+  Container,
   Group,
   Header,
   Menu,
@@ -34,7 +35,7 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
       <AppShell
         header={
           <Header height={50} className={classes.main}>
-            <Group position="apart" h="100%" pl="md" pr={4}>
+            <Group position="apart" h="100%" pl="md" pr="xs">
               <Group spacing="xl">
                 <UnstyledButton component={Link} href="/" mr="xl">
                   <Group h="100%" align="center" spacing="xs">
@@ -67,7 +68,7 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
           },
         })}
       >
-        {children}
+        <Container maw={800}>{children}</Container>
       </AppShell>
     </>
   );
@@ -124,7 +125,7 @@ const useStyles = createStyles(({ colors, colorScheme }) => ({
     "&:hover": { color: colors.gray[0] },
   },
   main: {
-    backgroundColor: colors.grape[colorScheme === "dark" ? 7 : 4],
+    backgroundColor: colors.grape[colorScheme === "dark" ? 7 : 6],
   },
   btn: {
     backgroundColor: colors.grape[colorScheme === "dark" ? 4 : 7],
