@@ -40,8 +40,12 @@ const KanaPage: NextPage = () => {
       <Space h="xl" />
 
       <Breadcrumbs mb="md">
-        <Anchor component={Link} href="/">Home</Anchor>
-        <Anchor component={Link} href="/learn">Practice</Anchor>
+        <Anchor component={Link} href="/">
+          Home
+        </Anchor>
+        <Anchor component={Link} href="/learn">
+          Practice
+        </Anchor>
         <Text color="dimmed">Select Kana</Text>
       </Breadcrumbs>
 
@@ -105,7 +109,10 @@ const KanaSelectionForm = ({
           <Stack key={index}>
             <Checkbox
               label={item.name}
-              checked={item.checked}
+              checked={item.checked || item.groups.every((x) => x.checked)}
+              indeterminate={
+                item.groups.filter((x) => x.checked).length > 0 && item.groups.some((x) => !x.checked)
+              }
               onChange={(event) => {
                 const checked = event.target.checked;
                 form.setFieldValue(`groups.${index}.checked`, checked);
