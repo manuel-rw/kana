@@ -61,8 +61,8 @@ export default function SignIn({
                 <div key={provider.name}>
                   <Button
                     leftIcon={ButtonIcon}
-                    onClick={async () => {
-                      await signIn(provider.id);
+                    onClick={() => {
+                      void signIn(provider.id);
                     }}
                     w="100%"
                   >
@@ -140,7 +140,7 @@ const CredentialsSignInForm = () => {
       name: form.values.name,
       password: form.values.password,
       callbackUrl: "/profile",
-    }).catch((err) => {});
+    }).catch(() => {});
   };
 
   return (

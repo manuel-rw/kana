@@ -1,5 +1,5 @@
 import { Card, Center, Container } from "@mantine/core";
-import { ReactNode } from "react";
+import { type ReactNode } from "react";
 
 interface FormWrapperProps {
   children: ReactNode;

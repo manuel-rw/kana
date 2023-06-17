@@ -17,7 +17,7 @@ import {
 import { signOut, useSession } from "next-auth/react";
 import Head from "next/head";
 import Link from "next/link";
-import { ReactNode } from "react";
+import { type ReactNode } from "react";
 import { DarkModeToggle } from "./dark-mode-toggle";
 
 interface MainLayoutProps {
@@ -105,8 +105,8 @@ const Profile = () => {
           Your Profile
         </Menu.Item>
         <Menu.Item
-          onClick={async () => {
-            await signOut();
+          onClick={() => {
+            void signOut();
           }}
           icon={<IconLogout size="1rem" />}
           color="red"

@@ -5,12 +5,10 @@ import {
   Flex,
   Center,
   Stack,
-  Group,
 } from "@mantine/core";
 import { getHotkeyHandler } from "@mantine/hooks";
 import { useEffect, useRef, useState } from "react";
 import { CommonKanaCard } from "./common";
-import { IconAlertCircle } from "@tabler/icons-react";
 
 interface CardKanaInputProps {
   kana: string;

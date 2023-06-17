@@ -3,6 +3,7 @@ import { ActionIcon, useMantineColorScheme,
 import { IconSun, IconMoonStars } from '@tabler/icons-react';
 
 export const DarkModeToggle = () => {
+    // eslint-disable-next-line @typescript-eslint/unbound-method
     const { colorScheme, toggleColorScheme } = useMantineColorScheme();
     const {classes} = useStyles();
 
