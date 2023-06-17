@@ -44,8 +44,8 @@ export default function SignIn({
           Sign in
         </Title>
         <Text align="center" size="sm" mb="md">
-          We&apos;ll never ask for your credentials via Email. Keep your login data
-          stored securely.
+          We&apos;ll never ask for your credentials via Email. Keep your login
+          data stored securely.
         </Text>
         <Stack mb="md">
           {Object.values(providers)
@@ -61,6 +61,15 @@ export default function SignIn({
                 <div key={provider.name}>
                   <Button
                     leftIcon={ButtonIcon}
+                    sx={(theme) => ({
+                      backgroundColor: theme.colors.dark[4],
+                      ":hover": {
+                        backgroundColor:
+                          theme.colorScheme === "dark"
+                            ? theme.colors.dark[5]
+                            : theme.colors.dark[6],
+                      },
+                    })}
                     onClick={() => {
                       void signIn(provider.id);
                     }}
@@ -96,8 +105,8 @@ const ErrorDisplay = ({ error }: { error: string }) => {
     case "CredentialsSignin":
       return (
         <Alert icon={<IconAlertTriangle size="1rem" />} color="red">
-          Your credentials are incorrect or this account doesn&apos;t exist. Please
-          try again
+          Your credentials are incorrect or this account doesn&apos;t exist.
+          Please try again
         </Alert>
       );
     case "OAuthSignin":
@@ -150,6 +159,7 @@ const CredentialsSignInForm = () => {
           w="100%"
           label="Username"
           placeholder="Your username"
+          variant="filled"
           withAsterisk
           {...form.getInputProps("name")}
         />
@@ -158,6 +168,7 @@ const CredentialsSignInForm = () => {
           w="100%"
           label="Password"
           placeholder="Your password"
+          variant="filled"
           withAsterisk
           {...form.getInputProps("password")}
         />
