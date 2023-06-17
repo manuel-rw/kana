@@ -2,6 +2,7 @@ import { Button, Card, Checkbox, Loader, Stack, Title } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { type Kana, type KanaGroup, type KanaGroupType } from "@prisma/client";
 import { type NextPage } from "next";
+import { type GetSessionParams, getSession } from "next-auth/react";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { MainLayout } from "~/layout/main-layout";
@@ -115,5 +116,22 @@ const KanaSelectionForm = ({
     </form>
   );
 };
+
+export async function getServerSideProps(context: GetSessionParams) {
+  const session = await getSession(context);
+
+  if (!session) {
+    return {
+      redirect: {
+        destination: "/auth/signin",
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: { session },
+  };
+}
 
 export default KanaPage;

@@ -1,14 +1,15 @@
 import {
-  Card,
-  Grid,
-  Title,
-  Text,
   Button,
+  Card,
+  Flex,
+  Grid,
   Image,
   Indicator,
-  Flex,
+  Text,
+  Title,
 } from "@mantine/core";
 import { type NextPage } from "next";
+import { type GetSessionParams, getSession } from "next-auth/react";
 import Head from "next/head";
 import Link from "next/link";
 import { type ReactNode } from "react";
@@ -25,8 +26,13 @@ interface PracticeCard {
 const cards: PracticeCard[] = [
   {
     title: "Practice reading Kana",
-    description: "In this course, you'll practice reading Hiragana and Katakana, the most basic writing in Japanese. Being able to read Hiragana and Katakana will enable you, to read and write basic sentences in Japanese.",
-    footer: <Button component={Link} href="/learn/kana/" fullWidth>Start practice</Button>,
+    description:
+      "In this course, you'll practice reading Hiragana and Katakana, the most basic writing in Japanese. Being able to read Hiragana and Katakana will enable you, to read and write basic sentences in Japanese.",
+    footer: (
+      <Button component={Link} href="/learn/kana/" fullWidth>
+        Start practice
+      </Button>
+    ),
     isRecommended: true,
     imageSrc:
       "https://files.tofugu.com/articles/japanese/2014-06-30-learn-hiragana/header-2560x.jpg",
@@ -35,7 +41,11 @@ const cards: PracticeCard[] = [
     title: "Basic Sentences",
     description:
       "Practice your basic communication skills while translating common sentences, answering to questions and communicating with friends",
-    footer: <Button fullWidth disabled>Coming soon</Button>,
+    footer: (
+      <Button fullWidth disabled>
+        Coming soon
+      </Button>
+    ),
     isRecommended: false,
   },
 ];
@@ -88,5 +98,22 @@ const PracticePage: NextPage = () => {
     </MainLayout>
   );
 };
+
+export async function getServerSideProps(context: GetSessionParams) {
+  const session = await getSession(context);
+
+  if (!session) {
+    return {
+      redirect: {
+        destination: "/auth/signin",
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: { session },
+  };
+}
 
 export default PracticePage;

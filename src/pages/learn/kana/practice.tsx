@@ -13,6 +13,7 @@ import {
 } from "@mantine/core";
 import { IconArrowLeft } from "@tabler/icons-react";
 import { type NextPage } from "next";
+import { type GetSessionParams, getSession } from "next-auth/react";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -192,5 +193,22 @@ type LocalStats = {
   incorrect: number;
   correct: number;
 };
+
+export async function getServerSideProps(context: GetSessionParams) {
+  const session = await getSession(context);
+
+  if (!session) {
+    return {
+      redirect: {
+        destination: "/auth/signin",
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: { session },
+  };
+}
 
 export default PracticeKanaPage;
