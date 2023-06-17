@@ -1,9 +1,12 @@
 import {
+  Accordion,
+  Alert,
   Anchor,
   Breadcrumbs,
   Button,
   Card,
   Checkbox,
+  Flex,
   Loader,
   Space,
   Stack,
@@ -12,6 +15,7 @@ import {
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { type Kana, type KanaGroup, type KanaGroupType } from "@prisma/client";
+import { IconAlertTriangle } from "@tabler/icons-react";
 import { type NextPage } from "next";
 import { getSession, type GetSessionParams } from "next-auth/react";
 import Head from "next/head";
@@ -56,7 +60,7 @@ const KanaPage: NextPage = () => {
         start learning.
       </Text>
 
-      <Card>
+      <Card withBorder>
         <KanaSelectionForm data={data} />
       </Card>
     </MainLayout>
@@ -95,55 +99,78 @@ const KanaSelectionForm = ({
     const params = new URLSearchParams();
     const keys = checkedGroups.join(",");
     params.set("kanaTypes", keys);
-    router
-      .push("/learn/kana/practice?" + params.toString())
-      .then(() => {})
-      .catch(() => {});
+    void router.push("/learn/kana/practice?" + params.toString());
   };
 
   return (
     <form onSubmit={form.onSubmit(handleSubmit)}>
-      <Stack>
+      <Text weight="bold" mb="md">
+        Practice configuration
+      </Text>
+      <Accordion variant="separated">
         {form.values.groups.map((item, index) => (
-          <Stack key={index}>
-            <Checkbox
-              label={item.name}
-              checked={item.groups.every((x) => x.checked)}
-              indeterminate={
-                item.groups.filter((x) => x.checked).length > 0 && item.groups.some((x) => !x.checked)
-              }
-              onChange={(event) => {
-                const checked = event.target.checked;
-                item.groups.forEach((_, index3) => {
-                  form.setFieldValue(
-                    `groups.${index}.groups.${index3}.checked`,
-                    checked
-                  );
-                });
-              }}
-            />
-            {item.groups.map((group, index2) => (
+          <Accordion.Item key={index} value={`item-${index}`}>
+            <Flex>
               <Checkbox
-                label={`${group.name} (${group.kanas.length})`}
-                key={index2}
-                checked={group.checked}
+                label={item.name}
+                checked={item.groups.every((x) => x.checked)}
+                indeterminate={
+                  item.groups.filter((x) => x.checked).length > 0 &&
+                  item.groups.some((x) => !x.checked)
+                }
                 onChange={(event) => {
                   const checked = event.target.checked;
-                  form.setFieldValue(
-                    `groups.${index}.groups.${index2}.checked`,
-                    checked
-                  );
+                  item.groups.forEach((_, index3) => {
+                    form.setFieldValue(
+                      `groups.${index}.groups.${index3}.checked`,
+                      checked
+                    );
+                  });
                 }}
-                ml="lg"
+                style={{
+                  whiteSpace: 'nowrap'
+                }}
+                p="md"
               />
-            ))}
-          </Stack>
+              <Accordion.Control />
+            </Flex>
+            <Accordion.Panel>
+              <Stack>
+                {item.groups.map((group, index2) => (
+                  <Checkbox
+                    label={`${group.name} (${group.kanas.length})`}
+                    key={index2}
+                    checked={group.checked}
+                    onChange={(event) => {
+                      const checked = event.target.checked;
+                      form.setFieldValue(
+                        `groups.${index}.groups.${index2}.checked`,
+                        checked
+                      );
+                    }}
+                    ml="lg"
+                  />
+                ))}
+              </Stack>
+            </Accordion.Panel>
+          </Accordion.Item>
         ))}
+      </Accordion>
 
-        <Button type="submit" disabled={checkedGroups.length === 0}>
-          Start
-        </Button>
-      </Stack>
+      {checkedGroups.length === 0 && (
+        <Alert icon={<IconAlertTriangle size="1rem" />} color="red" mt="md">
+          Please select at least one group of Kana to continue
+        </Alert>
+      )}
+
+      <Button
+        type="submit"
+        disabled={checkedGroups.length === 0}
+        mt="md"
+        fullWidth
+      >
+        Start
+      </Button>
     </form>
   );
 };
