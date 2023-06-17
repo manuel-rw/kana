@@ -4,6 +4,7 @@ import Head from "next/head";
 import { Button, Group, Space, Stack, Text, Title } from "@mantine/core";
 import { IconArrowRight } from "@tabler/icons-react";
 import { MainLayout } from "~/layout/main-layout";
+import Link from "next/link";
 
 const Home: NextPage = () => {
   return (
@@ -70,11 +71,18 @@ const HeroBanner: React.FC = () => {
             },
           })}
           rightIcon={<IconArrowRight size="1rem" />}
+          component={Link}
+          href="/learn"
           variant="light"
         >
           Start learning
         </Button>
-        <Button rightIcon={<IconArrowRight size="1rem" />} variant="flat">
+        <Button
+          component={Link}
+          href="/auth/signup"
+          rightIcon={<IconArrowRight size="1rem" />}
+          variant="flat"
+        >
           Sign up
         </Button>
       </Group>

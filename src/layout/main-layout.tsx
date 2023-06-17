@@ -1,8 +1,10 @@
 import {
   AppShell,
   Avatar,
-  Button,
+  Burger,
+  Center,
   Container,
+  Drawer,
   Group,
   Header,
   Menu,
@@ -25,13 +27,77 @@ import Head from "next/head";
 import Link from "next/link";
 import { useState, type ReactNode } from "react";
 import { DarkModeToggle } from "./dark-mode-toggle";
+import { useDisclosure } from "@mantine/hooks";
 
 interface MainLayoutProps {
   children: ReactNode;
 }
 
+const links: {
+  label: string;
+  link: string;
+  links?: { link: string; label: string }[];
+}[] = [
+  {
+    label: "Home",
+    link: "/",
+  },
+  {
+    label: "Practice",
+    link: "/learn",
+    links: [
+      {
+        label: "Hiragana & Katakana",
+        link: "/learn/kana",
+      },
+    ],
+  },
+];
+
 export const MainLayout = ({ children }: MainLayoutProps) => {
   const { classes } = useStyles();
+  const [opened, { toggle, close }] = useDisclosure(false);
+
+  const items = links.map((link) => {
+    const menuItems = link.links?.map((item) => (
+      <Menu.Item key={item.link}>
+        <Text component={Link} href={item.link}>{item.label}</Text>
+      </Menu.Item>
+    ));
+
+    if (menuItems) {
+      return (
+        <Menu
+          key={link.label}
+          trigger="hover"
+          transitionProps={{ exitDuration: 0 }}
+          withinPortal
+        >
+          <Menu.Target>
+            <Link href={link.link} className={classes.link}>
+              <Center>
+                <span className={classes.linkLabel}>{link.label}</span>
+                <IconChevronDown size={rem(12)} stroke={1.5} />
+              </Center>
+            </Link>
+          </Menu.Target>
+          <Menu.Dropdown>{menuItems}</Menu.Dropdown>
+        </Menu>
+      );
+    }
+
+    return (
+      <a
+        key={link.label}
+        href={link.link}
+        className={classes.link}
+        onClick={(event) => event.preventDefault()}
+      >
+        {link.label}
+      </a>
+    );
+  });
+
   return (
     <>
       <Head>
@@ -42,6 +108,13 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
           <Header height={55} className={classes.main}>
             <Group position="apart" h="100%" pl="lg" pr="md">
               <Group spacing="xl">
+                <Burger
+                  opened={opened}
+                  onClick={toggle}
+                  className={classes.burger}
+                  size="sm"
+                  color="white"
+                />
                 <UnstyledButton component={Link} href="/" mr="xl">
                   <Group h="100%" align="center" spacing="xs">
                     <IconLanguageHiragana color="white" />
@@ -52,10 +125,12 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
                   </Group>
                 </UnstyledButton>
 
-                <UnstyledButton component={Link} href="/learn">
-                  <Text className={classes.navItem}>Learn</Text>
-                </UnstyledButton>
+                <Group className={classes.links}>{items}</Group>
               </Group>
+
+              <Drawer opened={opened} onClose={close}>
+                {items}
+              </Drawer>
 
               <Group>
                 <DarkModeToggle />
@@ -199,5 +274,42 @@ const useStyles = createStyles((theme) => ({
         .background!,
       0.1
     ),
+  },
+
+  burger: {
+    [theme.fn.largerThan("sm")]: {
+      display: "none",
+    },
+  },
+
+  links: {
+    [theme.fn.smallerThan("sm")]: {
+      display: "none",
+    },
+  },
+
+  link: {
+    display: "block",
+    lineHeight: 1,
+    padding: `${rem(8)} ${rem(12)}`,
+    borderRadius: theme.radius.sm,
+    textDecoration: "none",
+    color:
+      theme.colorScheme === "dark"
+        ? theme.colors.gray[3]
+        : theme.colors.gray[3],
+    fontSize: theme.fontSizes.sm,
+    fontWeight: 500,
+
+    "&:hover": {
+      backgroundColor:
+        theme.colorScheme === "dark"
+          ? theme.colors.grape[8]
+          : theme.colors.grape[7],
+    },
+  },
+
+  linkLabel: {
+    marginRight: rem(5),
   },
 }));
