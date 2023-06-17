@@ -6,6 +6,7 @@
     "build": "next build",
     "dev": "cross-env NODE_OPTIONS=\"-r next-logger\" next dev",
     "postinstall": "prisma generate",
+    "ci:postinstall": "prisma generate --schema=.\\prisma\\schema.production.prisma",
     "lint": "next lint",
     "start": "cross-env NODE_OPTIONS=\"-r next-logger\" next start"
   },
