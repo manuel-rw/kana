@@ -75,7 +75,6 @@ const KanaSelectionForm = ({
   const router = useRouter();
   const enrichedData = data.map((item) => ({
     ...item,
-    checked: false,
     groups: item.groups.map((group) => ({
       ...group,
       checked: false,
@@ -109,13 +108,12 @@ const KanaSelectionForm = ({
           <Stack key={index}>
             <Checkbox
               label={item.name}
-              checked={item.checked || item.groups.every((x) => x.checked)}
+              checked={item.groups.every((x) => x.checked)}
               indeterminate={
                 item.groups.filter((x) => x.checked).length > 0 && item.groups.some((x) => !x.checked)
               }
               onChange={(event) => {
                 const checked = event.target.checked;
-                form.setFieldValue(`groups.${index}.checked`, checked);
                 item.groups.forEach((_, index3) => {
                   form.setFieldValue(
                     `groups.${index}.groups.${index3}.checked`,
