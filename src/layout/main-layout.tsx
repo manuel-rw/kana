@@ -6,6 +6,7 @@ import {
   Group,
   Header,
   Menu,
+  ScrollArea,
   Text,
   UnstyledButton,
   createStyles,
@@ -68,10 +69,14 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
               theme.colorScheme === "dark"
                 ? theme.colors.dark[8]
                 : theme.colors.gray[0],
+            height: "100vh",
+            paddingTop: 55
           },
         })}
       >
-        <Container maw={800}>{children}</Container>
+        <ScrollArea type="auto" h="100%">
+          <Container maw={800}>{children}</Container>
+        </ScrollArea>
       </AppShell>
     </>
   );
