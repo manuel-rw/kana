@@ -9,8 +9,11 @@ import {
   Text,
   UnstyledButton,
   createStyles,
+  rem,
+  useMantineTheme,
 } from "@mantine/core";
 import {
+  IconChevronDown,
   IconLanguageHiragana,
   IconLogout,
   IconUser,
@@ -18,7 +21,7 @@ import {
 import { signOut, useSession } from "next-auth/react";
 import Head from "next/head";
 import Link from "next/link";
-import { type ReactNode } from "react";
+import { useState, type ReactNode } from "react";
 import { DarkModeToggle } from "./dark-mode-toggle";
 
 interface MainLayoutProps {
@@ -76,6 +79,9 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
 
 const Profile = () => {
   const { data: sessionData } = useSession();
+  const { classes, cx } = useStyles();
+  const theme = useMantineTheme();
+  const [userMenuOpened, setUserMenuOpened] = useState(false);
 
   if (!sessionData) {
     return (
@@ -91,10 +97,34 @@ const Profile = () => {
   }
 
   return (
-    <Menu width={150} withArrow withinPortal>
+    <Menu
+      onClose={() => setUserMenuOpened(false)}
+      onOpen={() => setUserMenuOpened(true)}
+      width={150}
+      withArrow
+      withinPortal
+    >
       <Menu.Target>
-        <UnstyledButton>
-          <Avatar src={sessionData.user.image} radius="xl" />
+        <UnstyledButton
+          className={cx(classes.user, { [classes.userActive]: userMenuOpened })}
+        >
+          <Group spacing={7}>
+            <Avatar
+              src={sessionData.user.image}
+              alt={sessionData.user.name ?? undefined}
+              radius="xl"
+              size={20}
+            />
+            <Text
+              weight={500}
+              size="sm"
+              sx={{ lineHeight: 1, color: theme.white }}
+              mr={3}
+            >
+              {sessionData.user.name}
+            </Text>
+            <IconChevronDown size={rem(12)} stroke={1.5} />
+          </Group>
         </UnstyledButton>
       </Menu.Target>
       <Menu.Dropdown>
@@ -119,15 +149,40 @@ const Profile = () => {
   );
 };
 
-const useStyles = createStyles(({ colors, colorScheme }) => ({
+const useStyles = createStyles((theme) => ({
   navItem: {
-    color: colors.gray[2],
-    "&:hover": { color: colors.gray[0] },
+    color: theme.colors.gray[2],
+    "&:hover": { color: theme.colors.gray[0] },
   },
   main: {
-    backgroundColor: colors.grape[colorScheme === "dark" ? 7 : 6],
+    backgroundColor: theme.colors.grape[theme.colorScheme === "dark" ? 7 : 6],
   },
   btn: {
-    backgroundColor: colors.grape[colorScheme === "dark" ? 4 : 7],
+    backgroundColor: theme.colors.grape[theme.colorScheme === "dark" ? 4 : 7],
+  },
+  user: {
+    color: theme.white,
+    padding: `${theme.spacing.xs} ${theme.spacing.sm}`,
+    borderRadius: theme.radius.sm,
+    transition: "background-color 100ms ease",
+
+    "&:hover": {
+      backgroundColor: theme.fn.lighten(
+        theme.fn.variant({ variant: "filled", color: theme.primaryColor })
+          .background!,
+        0.1
+      ),
+    },
+
+    [theme.fn.smallerThan("xs")]: {
+      display: "none",
+    },
+  },
+  userActive: {
+    backgroundColor: theme.fn.lighten(
+      theme.fn.variant({ variant: "filled", color: theme.primaryColor })
+        .background!,
+      0.1
+    ),
   },
 }));

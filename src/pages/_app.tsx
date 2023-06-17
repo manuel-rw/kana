@@ -17,6 +17,7 @@ import { ModalsProvider } from "@mantine/modals";
 import { EditKanaModal } from "~/modals/edit-kana-modal";
 import { EditKanaGroupType } from "~/modals/edit-kana-group-type";
 import { EditKanaGroupModal } from "~/modals/edit-kana-group";
+import { RouterTransition } from "~/components/router-transition";
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
@@ -58,6 +59,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
           withGlobalStyles
           withNormalizeCSS
         >
+          <RouterTransition />
           <Notifications />
           <ModalsProvider
             modals={{
