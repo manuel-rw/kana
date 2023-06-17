@@ -16,6 +16,7 @@ import {
 import {
   IconChevronDown,
   IconLanguageHiragana,
+  IconLogin,
   IconLogout,
   IconUser,
 } from "@tabler/icons-react";
@@ -70,7 +71,7 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
                 ? theme.colors.dark[8]
                 : theme.colors.gray[0],
             height: "100vh",
-            paddingTop: 55
+            paddingTop: 55,
           },
         })}
       >
@@ -90,14 +91,23 @@ const Profile = () => {
 
   if (!sessionData) {
     return (
-      <Button
+      <UnstyledButton
+        className={cx(classes.user, { [classes.userActive]: userMenuOpened })}
         component={Link}
         href="/auth/signin"
-        leftIcon={<IconUser size="1rem" />}
-        variant="default"
       >
-        Login
-      </Button>
+        <Group spacing={7}>
+          <Text
+            weight={500}
+            size="sm"
+            sx={{ lineHeight: 1, color: theme.white }}
+            mr={3}
+          >
+            Sign In
+          </Text>
+          <IconLogin size={rem(12)} stroke={1.5} />
+        </Group>
+      </UnstyledButton>
     );
   }
 
