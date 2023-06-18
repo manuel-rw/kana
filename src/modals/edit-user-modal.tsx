@@ -19,7 +19,7 @@ export const EditUserModal = ({
   innerProps,
 }: ContextModalProps<{ user: SingleUserType }>) => {
   const utils = api.useContext();
-  const { mutateAsync } = api.user.updateUser.useMutation();
+  const { mutateAsync, isLoading } = api.user.updateUser.useMutation();
   const { data: rolesData } = api.roles.findAllRoles.useQuery();
 
   const form = useForm({
@@ -59,6 +59,7 @@ export const EditUserModal = ({
   return (
     <form onSubmit={form.onSubmit(handleSubmit)}>
       <TextInput
+        disabled={isLoading}
         label="Name"
         variant="filled"
         mb="md"
@@ -66,6 +67,7 @@ export const EditUserModal = ({
         {...form.getInputProps("name")}
       />
       <TextInput
+        disabled={isLoading}
         label="Email"
         variant="filled"
         mb="md"
@@ -73,6 +75,7 @@ export const EditUserModal = ({
       />
 
       <MultiSelect
+        disabled={isLoading}
         data={data}
         variant="filled"
         label="Roles"
@@ -80,7 +83,12 @@ export const EditUserModal = ({
         {...form.getInputProps("roles")}
       />
 
-      <Button disabled={!form.isValid()} type="submit" fullWidth>
+      <Button
+        disabled={!form.isValid()}
+        loading={isLoading}
+        type="submit"
+        fullWidth
+      >
         Save
       </Button>
     </form>

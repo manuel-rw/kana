@@ -138,8 +138,11 @@ const KanaGroupTypesTables = () => {
                           },
                         });
                       }}
+                      w="100%"
                     >
-                      <Text>{group.name}</Text>
+                      <Text style={{ whiteSpace: "nowrap" }} align="center">
+                        {group.name}
+                      </Text>
                     </UnstyledButton>
                   </th>
                 ))}
@@ -189,7 +192,12 @@ const KanaGroupTypesTables = () => {
                               w="100%"
                               h="100%"
                             >
-                              <Text align="center">{kana?.kana}</Text>
+                              <Text
+                                style={{ whiteSpace: "nowrap" }}
+                                align="center"
+                              >
+                                {kana?.kana}
+                              </Text>
                             </UnstyledButton>
                           </td>
                         );
@@ -288,19 +296,17 @@ const AddNewKanaGroupTypeForm = () => {
   };
   return (
     <form onSubmit={form.onSubmit(handleSubmit)}>
-      <Card>
-        <Group align="start">
-          <TextInput
-            variant="filled"
-            placeholder="Hiragana, Katakana, ..."
-            style={{ flexGrow: 1 }}
-            {...form.getInputProps("name")}
-          />
-          <Button type="submit" disabled={!form.isValid()}>
-            Add Type
-          </Button>
-        </Group>
-      </Card>
+      <Group align="start">
+        <TextInput
+          variant="filled"
+          placeholder="Hiragana, Katakana, ..."
+          style={{ flexGrow: 1 }}
+          {...form.getInputProps("name")}
+        />
+        <Button type="submit" disabled={!form.isValid()}>
+          Add Type
+        </Button>
+      </Group>
     </form>
   );
 };

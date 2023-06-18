@@ -96,7 +96,7 @@ export function UsersTable({ data }: { data: UserItemsType }) {
   const openEditModal = (user: SingleUserItemType) =>
     modals.openContextModal({
       modal: "editUserModal",
-      title: "test",
+      title: <Text weight="bold">Edit user &quot;{user.name}&quot;</Text>,
       innerProps: {
         user: user,
       },
@@ -137,7 +137,13 @@ export function UsersTable({ data }: { data: UserItemsType }) {
 
   return (
     <ScrollArea>
-      <Table withBorder withColumnBorders verticalSpacing="sm">
+      <Table
+        withBorder
+        withColumnBorders
+        highlightOnHover
+        striped
+        verticalSpacing="sm"
+      >
         <thead>
           <tr>
             <th>User</th>

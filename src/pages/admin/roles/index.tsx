@@ -123,7 +123,14 @@ export function UsersTable({ data }: { data: UserItemsType }) {
 
   return (
     <ScrollArea>
-      <Table withBorder withColumnBorders verticalSpacing="sm" mb="md">
+      <Table
+        withBorder
+        withColumnBorders
+        highlightOnHover
+        striped
+        verticalSpacing="sm"
+        mb="md"
+      >
         <thead>
           <tr>
             <th>Roles</th>
@@ -147,8 +154,8 @@ export function UsersTable({ data }: { data: UserItemsType }) {
       <Button
         onClick={() =>
           openEditModal({
-            id: '',
-            name: '',
+            id: "",
+            name: "",
             isAdmin: false,
           })
         }
