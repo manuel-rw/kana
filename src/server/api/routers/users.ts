@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { createTRPCRouter, protectedProcedure } from "../trpc";
+import { createTRPCRouter, protectedAdminProcedure, protectedProcedure } from "../trpc";
 
 export const findAllUsersOutputSingleItemSchema = z.object({
   name: z.string(),
@@ -17,7 +17,7 @@ export const findAllUsersOutputSchema = z.array(
 );
 
 export const userRouter = createTRPCRouter({
-  findAllUsers: protectedProcedure
+  findAllUsers: protectedAdminProcedure
     .output(findAllUsersOutputSchema)
     .query(async ({ ctx }) => {
       const users = await ctx.prisma.user.findMany({

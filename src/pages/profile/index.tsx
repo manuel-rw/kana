@@ -24,6 +24,7 @@ const ProfilePage: NextPage = () => {
         avatar={data.user.image}
         image={data.user.image}
         name={data.user.name}
+        roles={data.user.roles}
       />
     </MainLayout>
   );

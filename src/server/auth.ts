@@ -1,6 +1,6 @@
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 
-import bcrypt from 'bcrypt';
+import bcrypt from "bcrypt";
 
 import { type GetServerSidePropsContext } from "next";
 
@@ -15,6 +15,7 @@ import Credentials from "next-auth/providers/credentials";
 import { env } from "~/env.mjs";
 import { signInSchema } from "~/schemas/sign-in-schema";
 import { prisma } from "~/server/db";
+import { type Role } from "@prisma/client";
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
@@ -26,15 +27,20 @@ declare module "next-auth" {
   interface Session extends DefaultSession {
     user: {
       id: string;
-      // ...other properties
-      // role: UserRole;
+      roles: Role[];
+      isAdmin: boolean;
     } & DefaultSession["user"];
   }
 
-  // interface User {
-  //   // ...other properties
-  //   // role: UserRole;
-  // }
+  interface User {
+    roles: Role[];
+  }
+}
+
+declare module "next-auth/jwt" {
+  interface JWT {
+    roles: Role[];
+  }
 }
 
 /**
@@ -44,20 +50,31 @@ declare module "next-auth" {
  */
 export const authOptions: NextAuthOptions = {
   callbacks: {
-    jwt: ({ token }) => token,
+    jwt: ({ token, user }) => {
+      if (user == undefined) {
+        return token;
+      }
+
+      token.roles = user.roles;
+      return token;
+    },
     session({ session, token }) {
       if (token && session.user) {
         // eslint-disable-next-line no-param-reassign
         session.user.id = token.id as string;
         // eslint-disable-next-line no-param-reassign
         session.user.name = token.name as string;
+
+        session.user.roles = token.roles ?? [];
+        session.user.isAdmin =
+          token.roles?.some((role) => role.isAdmin) ?? false;
       }
 
       return session;
-    }
+    },
   },
   session: {
-    strategy: 'jwt',
+    strategy: "jwt",
     maxAge: 30 * 24 * 60 * 60, // 30 days
   },
   adapter: PrismaAdapter(prisma),
@@ -76,29 +93,37 @@ export const authOptions: NextAuthOptions = {
      * @see https://next-auth.js.org/providers/github
      */
     Credentials({
-      name: 'credentials',
+      name: "credentials",
       credentials: {
         name: {
-          label: 'Username',
-          type: 'text',
+          label: "Username",
+          type: "text",
         },
-        password: { label: 'Password', type: 'password' },
+        password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
         const data = await signInSchema.parseAsync(credentials);
 
         const user = await prisma.user.findFirst({
+          include: {
+            roles: true,
+          },
           where: {
             name: data.name,
-          }
+          },
         });
 
         if (!user || !user.password) {
           return null;
         }
 
-        console.log(`user ${user.id} is trying to log in. checking password...`);
-        const isValidPassword = await bcrypt.compare(data.password, user.password);
+        console.log(
+          `user ${user.id} is trying to log in. checking password...`
+        );
+        const isValidPassword = await bcrypt.compare(
+          data.password,
+          user.password
+        );
 
         if (!isValidPassword) {
           console.log(`password for user ${user.id} was incorrect`);
@@ -110,13 +135,14 @@ export const authOptions: NextAuthOptions = {
         return {
           id: user.id,
           name: user.name,
+          roles: user.roles,
         };
       },
     }),
   ],
   pages: {
-    signIn: '/auth/signin'
-  }
+    signIn: "/auth/signin",
+  },
 };
 
 /**

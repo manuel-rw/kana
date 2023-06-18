@@ -1,4 +1,13 @@
-import { Avatar, Card, Image, Text, createStyles, rem } from "@mantine/core";
+import {
+  Avatar,
+  Badge,
+  Card,
+  Group,
+  Image,
+  Text,
+  createStyles,
+  rem,
+} from "@mantine/core";
 
 const useStyles = createStyles((theme) => ({
   card: {
@@ -17,9 +26,15 @@ interface UserCardImageProps {
   image?: string | null;
   avatar?: string | null;
   name: string;
+  roles: { name: string }[];
 }
 
-export function UserCardImage({ image, avatar, name }: UserCardImageProps) {
+export function UserCardImage({
+  image,
+  avatar,
+  name,
+  roles,
+}: UserCardImageProps) {
   const { classes } = useStyles();
 
   return (
@@ -62,6 +77,11 @@ export function UserCardImage({ image, avatar, name }: UserCardImageProps) {
       <Text ta="center" fz="lg" fw={500} mt="sm">
         {name}
       </Text>
+      <Group>
+        {roles.map((role, index) => (
+          <Badge key={index}>{role.name}</Badge>
+        ))}
+      </Group>
     </Card>
   );
 }
