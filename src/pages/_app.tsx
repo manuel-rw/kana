@@ -1,25 +1,25 @@
-import { type AppType } from "next/app";
 import { type Session } from "next-auth";
 import { SessionProvider } from "next-auth/react";
+import { type AppType } from "next/app";
 
 import { api } from "~/utils/api";
 
-import "~/styles/globals.css";
 import {
-  type ColorScheme,
   ColorSchemeProvider,
   MantineProvider,
+  type ColorScheme,
 } from "@mantine/core";
-import { useState } from "react";
 import { useColorScheme } from "@mantine/hooks";
-import { Notifications } from "@mantine/notifications";
 import { ModalsProvider } from "@mantine/modals";
-import { EditKanaModal } from "~/modals/edit-kana-modal";
-import { EditKanaGroupType } from "~/modals/edit-kana-group-type";
-import { EditKanaGroupModal } from "~/modals/edit-kana-group";
+import { Notifications } from "@mantine/notifications";
+import { useState } from "react";
 import { RouterTransition } from "~/components/router-transition";
-import { EditUserModal } from "~/modals/edit-user-modal";
+import { EditKanaGroupModal } from "~/modals/edit-kana-group";
+import { EditKanaGroupType } from "~/modals/edit-kana-group-type";
+import { EditKanaModal } from "~/modals/edit-kana-modal";
 import { EditRoleModal } from "~/modals/edit-role-modal";
+import { EditUserModal } from "~/modals/edit-user-modal";
+import "~/styles/globals.css";
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
