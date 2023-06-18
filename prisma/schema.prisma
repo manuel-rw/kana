@@ -58,6 +58,14 @@ model User {
     salt          String?
     accounts      Account[]
     sessions      Session[]
+    roles         Role[]
+}
+
+model Role {
+    id          String  @id @default(cuid())
+    name        String
+    users       User[]
+    isAdmin     Boolean
 }
 
 model VerificationToken {
