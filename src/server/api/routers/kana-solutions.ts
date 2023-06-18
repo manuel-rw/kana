@@ -60,6 +60,7 @@ export const kanaSolutionsRouter = createTRPCRouter({
           proposal: input.proposal,
           kanaId: kana.id,
           date: new Date(),
+          userId: ctx.session.user.id,
         },
       });
 
@@ -77,6 +78,7 @@ export const kanaSolutionsRouter = createTRPCRouter({
             date: {
               gt: beforeDate,
             },
+            userId: ctx.session.user.id,
           },
         });
 

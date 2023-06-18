@@ -60,6 +60,7 @@ model User {
     accounts      Account[]
     sessions      Session[]
     roles         Role[]
+    userSolutions UserSolution[]
 }
 
 model Role {
@@ -104,6 +105,8 @@ model UserSolution {
     id          String @id @default(cuid())
     kana        Kana @relation(fields: [kanaId], references: [id], onDelete: Cascade)
     kanaId      String
+    user        User @relation(fields: [userId], references: [id], onDelete: Cascade)
+    userId      String
     proposal    String
     correct     Boolean
     date        DateTime
