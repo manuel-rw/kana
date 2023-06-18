@@ -11,6 +11,8 @@ import {
   Group,
   Space,
   Stack,
+  Breadcrumbs,
+  Anchor,
 } from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
 import { modals } from "@mantine/modals";
@@ -24,23 +26,39 @@ import {
 } from "@tabler/icons-react";
 import { type NextPage } from "next";
 import Head from "next/head";
+import Link from "next/link";
 import { z } from "zod";
+import { NavbarMinimal } from "~/layout/admin-navbar";
 import { MainLayout } from "~/layout/main-layout";
 import { api } from "~/utils/api";
 
 const ManageKanaPage: NextPage = () => {
   return (
-    <MainLayout>
+    <MainLayout navar={<NavbarMinimal />}>
       <Head>
         <title>Manage Kana • Kana</title>
       </Head>
-      <Title mb="lg">Manage Kana</Title>
 
-      <KanaGroupTypesTables />
+      <Space h="xl" />
 
-      <Space h="md" />
+      <Breadcrumbs mb="md">
+        <Anchor component={Link} href="/">
+          Home
+        </Anchor>
+        <Anchor component={Link} href="/admin">
+          Admin
+        </Anchor>
+        <Text color="dimmed">Manage Kana</Text>
+      </Breadcrumbs>
+      <Title mb="md">Manage Kana</Title>
 
-      <AddNewKanaGroupTypeForm />
+      <Card withBorder>
+        <KanaGroupTypesTables />
+
+        <Space h="md" />
+
+        <AddNewKanaGroupTypeForm />
+      </Card>
     </MainLayout>
   );
 };

@@ -19,6 +19,7 @@ import { IconPencil, IconTrash } from "@tabler/icons-react";
 import { type NextPage } from "next";
 import Link from "next/link";
 import { type z } from "zod";
+import { NavbarMinimal } from "~/layout/admin-navbar";
 import { MainLayout } from "~/layout/main-layout";
 import {
   type findAllUsersOutputSchema,
@@ -34,7 +35,7 @@ const ManageUsersPage: NextPage = () => {
 
   if (isLoading || !data) {
     return (
-      <MainLayout>
+      <MainLayout navar={<NavbarMinimal />}>
         <Center h="100%">
           <Loader />
         </Center>
@@ -43,7 +44,7 @@ const ManageUsersPage: NextPage = () => {
   }
 
   return (
-    <MainLayout>
+    <MainLayout navar={<NavbarMinimal />}>
       <Space h="xl" />
 
       <Breadcrumbs mb="md">
