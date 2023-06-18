@@ -1,9 +1,8 @@
 import {
   ActionIcon,
   Anchor,
-  Avatar,
-  Badge,
   Breadcrumbs,
+  Button,
   Card,
   Center,
   Group,
@@ -21,16 +20,16 @@ import Link from "next/link";
 import { type z } from "zod";
 import { MainLayout } from "~/layout/main-layout";
 import {
-  type findAllUsersOutputSchema,
-  type findAllUsersOutputSingleItemSchema,
-} from "~/server/api/routers/users";
+  type findAllRolesOutputSchema,
+  type findAllRolesOutputSingleItemSchema,
+} from "~/server/api/routers/roles";
 import { api } from "~/utils/api";
 
-type UserItemsType = z.infer<typeof findAllUsersOutputSchema>;
-type SingleUserItemType = z.infer<typeof findAllUsersOutputSingleItemSchema>;
+type UserItemsType = z.infer<typeof findAllRolesOutputSchema>;
+type SingleUserItemType = z.infer<typeof findAllRolesOutputSingleItemSchema>;
 
 const ManageUsersPage: NextPage = () => {
-  const { data, isLoading } = api.user.findAllUsers.useQuery();
+  const { data, isLoading } = api.roles.findAllRoles.useQuery();
 
   if (isLoading || !data) {
     return (
@@ -53,9 +52,9 @@ const ManageUsersPage: NextPage = () => {
         <Anchor component={Link} href="/admin">
           Admin
         </Anchor>
-        <Text color="dimmed">Users</Text>
+        <Text color="dimmed">Roles</Text>
       </Breadcrumbs>
-      <Title mb="md">Manage users</Title>
+      <Title mb="md">Manage roles</Title>
 
       <Card withBorder>
         <UsersTable data={data} />
@@ -66,53 +65,42 @@ const ManageUsersPage: NextPage = () => {
 
 export function UsersTable({ data }: { data: UserItemsType }) {
   const context = api.useContext();
-  const { mutateAsync } = api.user.deleteUser.useMutation({
+  const { mutateAsync } = api.roles.deleteRole.useMutation({
     onSuccess: () => {
-      void context.user.findAllUsers.invalidate();
+      void context.roles.findAllRoles.invalidate();
     },
   });
 
-  const openModal = (userId: string) =>
+  const openModal = (roleId: string) =>
     modals.openConfirmModal({
       title: "Please confirm your action",
       children: (
-        <Text size="sm">Are you sure, that you want to delete this user?</Text>
+        <Text size="sm">Are you sure, that you want to delete this role?</Text>
       ),
       labels: { confirm: "Confirm", cancel: "Cancel" },
       onCancel: () => {},
       onConfirm: () => {
         void mutateAsync({
-          id: userId,
+          id: roleId,
         });
       },
     });
 
-  const openEditModal = (user: SingleUserItemType) =>
+  const openEditModal = (role: SingleUserItemType) =>
     modals.openContextModal({
-      modal: "editUserModal",
-      title: "test",
+      modal: "editRoleModal",
+      title: "Edit role",
       innerProps: {
-        user: user,
+        role: role,
       },
     });
 
   const rows = data.map((item) => (
     <tr key={item.name}>
       <td>
-        <Group spacing="sm">
-          <Avatar size={30} src={item.image} radius={30} />
-          <Text fz="sm" fw={500}>
-            {item.name}
-          </Text>
-        </Group>
-      </td>
-
-      <td>
-        <Group spacing="xs">
-          {item.roles.map((role, index) => (
-            <Badge key={index} color={role.isAdmin ? 'red' : 'green'}>{role.name}</Badge>
-          ))}
-        </Group>
+        <Text fz="sm" fw={500}>
+          {item.name}
+        </Text>
       </td>
       <td>
         <Group spacing={0} position="right">
@@ -129,16 +117,38 @@ export function UsersTable({ data }: { data: UserItemsType }) {
 
   return (
     <ScrollArea>
-      <Table withBorder withColumnBorders verticalSpacing="sm">
+      <Table withBorder withColumnBorders verticalSpacing="sm" mb="md">
         <thead>
           <tr>
-            <th>User</th>
             <th>Roles</th>
             <th>Actions</th>
           </tr>
         </thead>
-        <tbody>{rows}</tbody>
+        <tbody>
+          {rows}
+          {rows.length === 0 && (
+            <tr>
+              <td colSpan={2}>
+                <Text color="dimmed" align="center">
+                  There are no roles yet
+                </Text>
+              </td>
+            </tr>
+          )}
+        </tbody>
       </Table>
+
+      <Button
+        onClick={() =>
+          openEditModal({
+            id: '',
+            name: '',
+            isAdmin: false,
+          })
+        }
+      >
+        Create role
+      </Button>
     </ScrollArea>
   );
 }

@@ -18,6 +18,8 @@ import { EditKanaModal } from "~/modals/edit-kana-modal";
 import { EditKanaGroupType } from "~/modals/edit-kana-group-type";
 import { EditKanaGroupModal } from "~/modals/edit-kana-group";
 import { RouterTransition } from "~/components/router-transition";
+import { EditUserModal } from "~/modals/edit-user-modal";
+import { EditRoleModal } from "~/modals/edit-role-modal";
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
@@ -66,6 +68,8 @@ const MyApp: AppType<{ session: Session | null }> = ({
               editKanaModal: EditKanaModal,
               editKanaGroupModal: EditKanaGroupModal,
               editKanaGroupType: EditKanaGroupType,
+              editUserModal: EditUserModal,
+              editRoleModal: EditRoleModal,
             }}
           >
             <Component {...pageProps} />
