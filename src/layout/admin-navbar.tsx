@@ -1,28 +1,20 @@
-import { useState } from "react";
 import {
   Navbar,
-  Center,
+  Stack,
   Tooltip,
   UnstyledButton,
   createStyles,
-  Stack,
   rem,
 } from "@mantine/core";
 import {
-  IconHome2,
-  IconGauge,
-  IconDeviceDesktopAnalytics,
-  IconFingerprint,
-  IconCalendarStats,
-  IconUser,
-  IconSettings,
-  IconLogout,
-  IconSwitchHorizontal,
-  IconLanguageHiragana,
-  IconUserCheck,
   IconDatabase,
+  IconHome2,
+  IconLogout,
+  IconUser,
+  IconUserCheck,
 } from "@tabler/icons-react";
 import Link from "next/link";
+import { useState } from "react";
 
 const useStyles = createStyles((theme) => ({
   link: {

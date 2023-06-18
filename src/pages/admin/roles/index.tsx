@@ -16,6 +16,7 @@ import {
 import { modals } from "@mantine/modals";
 import { IconPencil, IconTrash } from "@tabler/icons-react";
 import { type NextPage } from "next";
+import Head from "next/head";
 import Link from "next/link";
 import { type z } from "zod";
 import { NavbarMinimal } from "~/layout/admin-navbar";
@@ -44,6 +45,10 @@ const ManageUsersPage: NextPage = () => {
 
   return (
     <MainLayout navar={<NavbarMinimal />}>
+      <Head>
+        <title>Manage roles • Kana</title>
+      </Head>
+
       <Space h="xl" />
 
       <Breadcrumbs mb="md">
