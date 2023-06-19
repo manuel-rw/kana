@@ -1,5 +1,5 @@
-import { Box, Card, Flex, Group, Space, Stack, Text } from "@mantine/core";
-import { IconArrowLeft, IconArrowRight } from "@tabler/icons-react";
+import { Card, Flex, Group, Space, Stack, Text } from "@mantine/core";
+import { IconArrowRight } from "@tabler/icons-react";
 import { type NextPage } from "next";
 import { getSession, useSession, type GetSessionParams } from "next-auth/react";
 import Head from "next/head";
@@ -25,9 +25,10 @@ const ProfilePage: NextPage = () => {
       <Space h="xl" />
 
       <UserCardImage
-        avatar={sessionData.user.image}
-        image={sessionData.user.image}
-        name={sessionData.user.name}
+        avatar={data.user.image}
+        image={data.user.image}
+        name={data.user.name}
+        roles={data.user.roles}
       />
 
       <Space h="md" />

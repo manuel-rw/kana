@@ -1,7 +1,9 @@
 import {
   Avatar,
-  Box,
+  Badge,
   Card,
+  Group,
+  Box,
   Image,
   Text,
   createStyles,
@@ -25,9 +27,15 @@ interface UserCardImageProps {
   image?: string | null;
   avatar?: string | null;
   name: string;
+  roles: { name: string }[];
 }
 
-export function UserCardImage({ image, avatar, name }: UserCardImageProps) {
+export function UserCardImage({
+  image,
+  avatar,
+  name,
+  roles,
+}: UserCardImageProps) {
   const { classes } = useStyles();
 
   return (
@@ -74,6 +82,11 @@ export function UserCardImage({ image, avatar, name }: UserCardImageProps) {
       <Text ta="center" fz="lg" fw={500} mt="sm">
         {name}
       </Text>
+      <Group>
+        {roles.map((role, index) => (
+          <Badge key={index}>{role.name}</Badge>
+        ))}
+      </Group>
     </Card>
   );
 }
