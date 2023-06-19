@@ -40,6 +40,7 @@ declare module "next-auth" {
 declare module "next-auth/jwt" {
   interface JWT {
     roles: Role[];
+    id: string;
   }
 }
 
@@ -56,6 +57,7 @@ export const authOptions: NextAuthOptions = {
       }
 
       token.roles = user.roles;
+      token.id = user.id;
       return token;
     },
     session({ session, token }) {

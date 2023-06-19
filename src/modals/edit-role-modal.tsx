@@ -18,10 +18,10 @@ export const EditRoleModal = ({
   innerProps,
 }: ContextModalProps<{ role: SingleUserType }>) => {
   const utils = api.useContext();
-  const { mutateAsync } = api.roles.upsertRole.useMutation({
+  const { mutateAsync, isLoading } = api.roles.upsertRole.useMutation({
     onSuccess: () => {
       void utils.roles.findAllRoles.invalidate();
-    }
+    },
   });
 
   const form = useForm({
@@ -56,6 +56,7 @@ export const EditRoleModal = ({
   return (
     <form onSubmit={form.onSubmit(handleSubmit)}>
       <TextInput
+        disabled={isLoading}
         label="Name"
         variant="filled"
         mb="md"
@@ -64,13 +65,19 @@ export const EditRoleModal = ({
       />
 
       <Switch
+        disabled={isLoading}
         label="Is admin"
         variant="filled"
         mb="md"
         {...form.getInputProps("isAdmin", { type: "checkbox" })}
       />
 
-      <Button disabled={!form.isValid()} type="submit" fullWidth>
+      <Button
+        disabled={!form.isValid()}
+        loading={isLoading}
+        type="submit"
+        fullWidth
+      >
         Save
       </Button>
     </form>

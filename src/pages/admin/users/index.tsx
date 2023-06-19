@@ -17,8 +17,10 @@ import {
 import { modals } from "@mantine/modals";
 import { IconPencil, IconTrash } from "@tabler/icons-react";
 import { type NextPage } from "next";
+import Head from "next/head";
 import Link from "next/link";
 import { type z } from "zod";
+import { NavbarMinimal } from "~/layout/admin-navbar";
 import { MainLayout } from "~/layout/main-layout";
 import {
   type findAllUsersOutputSchema,
@@ -34,7 +36,7 @@ const ManageUsersPage: NextPage = () => {
 
   if (isLoading || !data) {
     return (
-      <MainLayout>
+      <MainLayout navar={<NavbarMinimal />}>
         <Center h="100%">
           <Loader />
         </Center>
@@ -43,7 +45,11 @@ const ManageUsersPage: NextPage = () => {
   }
 
   return (
-    <MainLayout>
+    <MainLayout navar={<NavbarMinimal />}>
+      <Head>
+        <title>Manage users • Kana</title>
+      </Head>
+
       <Space h="xl" />
 
       <Breadcrumbs mb="md">
@@ -90,7 +96,7 @@ export function UsersTable({ data }: { data: UserItemsType }) {
   const openEditModal = (user: SingleUserItemType) =>
     modals.openContextModal({
       modal: "editUserModal",
-      title: "test",
+      title: <Text weight="bold">Edit user &quot;{user.name}&quot;</Text>,
       innerProps: {
         user: user,
       },
@@ -110,7 +116,9 @@ export function UsersTable({ data }: { data: UserItemsType }) {
       <td>
         <Group spacing="xs">
           {item.roles.map((role, index) => (
-            <Badge key={index} color={role.isAdmin ? 'red' : 'green'}>{role.name}</Badge>
+            <Badge key={index} color={role.isAdmin ? "red" : "green"}>
+              {role.name}
+            </Badge>
           ))}
         </Group>
       </td>
@@ -129,7 +137,13 @@ export function UsersTable({ data }: { data: UserItemsType }) {
 
   return (
     <ScrollArea>
-      <Table withBorder withColumnBorders verticalSpacing="sm">
+      <Table
+        withBorder
+        withColumnBorders
+        highlightOnHover
+        striped
+        verticalSpacing="sm"
+      >
         <thead>
           <tr>
             <th>User</th>

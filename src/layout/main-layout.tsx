@@ -25,12 +25,18 @@ import {
 import { signOut, useSession } from "next-auth/react";
 import Head from "next/head";
 import Link from "next/link";
-import { useState, type ReactNode } from "react";
+import {
+  useState,
+  type ReactNode,
+  type ReactElement,
+  type JSXElementConstructor,
+} from "react";
 import { DarkModeToggle } from "./dark-mode-toggle";
 import { useDisclosure } from "@mantine/hooks";
 
 interface MainLayoutProps {
   children: ReactNode;
+  navar?: ReactElement<any, string | JSXElementConstructor<any>> | undefined;
 }
 
 const links: {
@@ -54,14 +60,16 @@ const links: {
   },
 ];
 
-export const MainLayout = ({ children }: MainLayoutProps) => {
+export const MainLayout = ({ children, navar }: MainLayoutProps) => {
   const { classes } = useStyles();
   const [opened, { toggle, close }] = useDisclosure(false);
 
   const items = links.map((link) => {
     const menuItems = link.links?.map((item) => (
       <Menu.Item key={item.link}>
-        <Text component={Link} href={item.link}>{item.label}</Text>
+        <Text component={Link} href={item.link}>
+          {item.label}
+        </Text>
       </Menu.Item>
     ));
 
@@ -149,6 +157,7 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
             paddingTop: 55,
           },
         })}
+        navbar={navar}
       >
         <ScrollArea type="auto" h="100%">
           <Container maw={800}>{children}</Container>

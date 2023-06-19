@@ -3,6 +3,7 @@ import {
   Badge,
   Card,
   Group,
+  Box,
   Image,
   Text,
   createStyles,
@@ -45,26 +46,30 @@ export function UserCardImage({
           overflow: "hidden",
         }}
       >
-        <Image
-          src={image}
-          fit="contain"
-          alt=""
-          styles={{
-            figure: {
-              position: "relative",
-              "&::after": {
-                content: '" "',
-                position: "absolute",
-                top: 0,
-                left: 0,
-                width: "100%",
-                height: "100%",
-                backdropFilter: "blur(10px)" /* apply the blur */,
-                pointerEvents: "none" /* make the overlay click-through */,
+        {image ? (
+          <Image
+            src={image}
+            fit="contain"
+            alt=""
+            styles={{
+              figure: {
+                position: "relative",
+                "&::after": {
+                  content: '" "',
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                  width: "100%",
+                  height: "100%",
+                  backdropFilter: "blur(10px)" /* apply the blur */,
+                  pointerEvents: "none" /* make the overlay click-through */,
+                },
               },
-            },
-          }}
-        />
+            }}
+          />
+        ) : (
+          <Box bg="gray" h="100%" />
+        )}
       </Card.Section>
       <Avatar
         src={avatar}

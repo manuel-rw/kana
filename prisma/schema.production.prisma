@@ -59,6 +59,15 @@ model User {
     salt          String?   @db.Text
     accounts      Account[]
     sessions      Session[]
+    roles         Role[]
+    userSolutions UserSolution[]
+}
+
+model Role {
+    id          String  @id @default(cuid())
+    name        String
+    users       User[]
+    isAdmin     Boolean
 }
 
 model VerificationToken {
@@ -96,6 +105,8 @@ model UserSolution {
     id          String @id @default(cuid())
     kana        Kana @relation(fields: [kanaId], references: [id], onDelete: Cascade)
     kanaId      String
+    user        User @relation(fields: [userId], references: [id], onDelete: Cascade)
+    userId      String
     proposal    String
     correct     Boolean
     date        DateTime
