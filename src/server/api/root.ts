@@ -4,6 +4,7 @@ import { createTRPCRouter } from "~/server/api/trpc";
 import { kanaSolutionsRouter } from "./routers/kana-solutions";
 import { userRouter } from "./routers/users";
 import { rolesRouter } from "./routers/roles";
+import { profileRouter } from "./routers/profile";
 
 /**
  * This is the primary router for your server.
@@ -15,7 +16,8 @@ export const appRouter = createTRPCRouter({
   kana: kanaRouter,
   kanaSolutions: kanaSolutionsRouter,
   user: userRouter,
-  roles: rolesRouter
+  roles: rolesRouter,
+  profile: profileRouter,
 });
 
 // export type definition of API

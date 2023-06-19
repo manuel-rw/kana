@@ -1,4 +1,12 @@
-import { Avatar, Card, Image, Text, createStyles, rem } from "@mantine/core";
+import {
+  Avatar,
+  Box,
+  Card,
+  Image,
+  Text,
+  createStyles,
+  rem,
+} from "@mantine/core";
 
 const useStyles = createStyles((theme) => ({
   card: {
@@ -30,26 +38,30 @@ export function UserCardImage({ image, avatar, name }: UserCardImageProps) {
           overflow: "hidden",
         }}
       >
-        <Image
-          src={image}
-          fit="contain"
-          alt=""
-          styles={{
-            figure: {
-              position: "relative",
-              "&::after": {
-                content: '" "',
-                position: "absolute",
-                top: 0,
-                left: 0,
-                width: "100%",
-                height: "100%",
-                backdropFilter: "blur(10px)" /* apply the blur */,
-                pointerEvents: "none" /* make the overlay click-through */,
+        {image ? (
+          <Image
+            src={image}
+            fit="contain"
+            alt=""
+            styles={{
+              figure: {
+                position: "relative",
+                "&::after": {
+                  content: '" "',
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                  width: "100%",
+                  height: "100%",
+                  backdropFilter: "blur(10px)" /* apply the blur */,
+                  pointerEvents: "none" /* make the overlay click-through */,
+                },
               },
-            },
-          }}
-        />
+            }}
+          />
+        ) : (
+          <Box bg="gray" h="100%" />
+        )}
       </Card.Section>
       <Avatar
         src={avatar}

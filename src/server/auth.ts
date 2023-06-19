@@ -31,10 +31,9 @@ declare module "next-auth" {
     } & DefaultSession["user"];
   }
 
-  // interface User {
-  //   // ...other properties
-  //   // role: UserRole;
-  // }
+  interface User {
+    id: string;
+  }
 }
 
 /**
@@ -44,7 +43,13 @@ declare module "next-auth" {
  */
 export const authOptions: NextAuthOptions = {
   callbacks: {
-    jwt: ({ token }) => token,
+    jwt: ({ token, user }) => {
+      if (user == undefined) {
+        return token;
+      }
+      token.id = user.id;
+      return token;
+    },
     session({ session, token }) {
       if (token && session.user) {
         // eslint-disable-next-line no-param-reassign
