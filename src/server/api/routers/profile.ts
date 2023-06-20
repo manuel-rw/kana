@@ -1,4 +1,4 @@
-import { Kana, UserSolution } from "@prisma/client";
+import { type UserSolution } from "@prisma/client";
 import { z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 

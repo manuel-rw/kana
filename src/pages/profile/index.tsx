@@ -25,10 +25,10 @@ const ProfilePage: NextPage = () => {
       <Space h="xl" />
 
       <UserCardImage
-        avatar={data.user.image}
-        image={data.user.image}
-        name={data.user.name}
-        roles={data.user.roles}
+        avatar={sessionData.user.image}
+        image={sessionData.user.image}
+        name={sessionData.user.name}
+        roles={sessionData.user.roles}
       />
 
       <Space h="md" />
